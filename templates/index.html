@@ -1,15 +1,24 @@
-<!Doctype html>
-<html>
-<head>
-    <title>Homepage/Searchpage</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %}Search Page{% endblock %}
 
-<form>
-    Job Title: <input type="text" name="job title">
-    Location: <input type="text" name="job_location">
-    <input type="submit">
-</form>
 
-</body>
-</html>
+{% block content %}
+
+<!-- <div> -->
+        <!-- user can search for just a job title -->
+    <form action="/jobs_title">
+        <input type="text" name="job title" placeholder="Search by Job Title">
+        <input type="submit">
+    </form>
+        <!-- user can search for a specific location -->
+    <form action="/jobs_location">
+        <input type="text" name="job location" placeholder="Search by Location">
+        <input type="submit">
+    </form>   
+        <!--  Search for both the job title and location as a single search -->
+        
+   
+<!--   </div> -->
+
+
+{% endblock %}

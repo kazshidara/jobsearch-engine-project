@@ -1,18 +1,14 @@
-<!Doctype html>
-<html>
-<head>
-    <title>Welcome</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+
 <h1>Diversity Job Search Engine</h1>
 <div>
     <h2>Welcome,</h2>
     <br>
-    <button type="button">Login</button>
-    <button type="button">Register</button>
-
+    <form action="/login">Sign In <input type="submit"></form>
+    <form action="/register">Sign Up<input type="submit"></form>
 </div>
 
-
-</body>
-</html>
+{% endblock %}

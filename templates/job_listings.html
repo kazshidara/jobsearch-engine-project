@@ -1,27 +1,19 @@
-<!Doctype html>
-<html>
-<head>
-    <title>Job Listings</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %}Job Listings{% endblock %}
+{% block content %}
 
 <div>
-    <p>Job 1</p>
-</div>
-<div>
-    <p>Job 2</p>
-</div>
-<div>
-    <p>Job 3</p>
-</div>
-<div>
-    <p>Job 4</p>
-</div>
-<div>
-    <p>Job 5</p>
+    {% for job in jobs %}
+        <h2>{{ job['company'] }}</h6>
+            <h3>Job Title: {{ job['title'] }}</h6>
+            <p> Location: {{ job['location'] }}</p>
+            <p>{{ job['released_at'] }} (days ago)</p>
+            <br>
+            <br>
+
+    {% endfor %}
 </div>
 
 
 
-</body>
-</html>
+{% endblock %}

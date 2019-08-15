@@ -11,7 +11,7 @@ from model import connect_to_db, db, User, Job, Rating
 app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
-app.secret_key = "Yeah you wish you knew"
+app.secret_key = "YeahYouWishYouKnew"
 
 app.jinja_env.undefined = StrictUndefined
 
@@ -28,7 +28,7 @@ def welcome():
 
     return render_template("welcome_page.html")
 
-@app.route('/register', methods=['GET'])
+@app.route('/register')
 def register_form():
     """Show form for user signup."""
 
@@ -70,7 +70,7 @@ def login_process():
     email = request.form["email"]
     password = request.form["password"]
 
-    user = User.query.filter_by(email=email).first()    #querying into db for email
+    user = User.query.filter_by(email=email).first() #querying into db for email
 
     if not user:
         flash("Sorry, we don't recognize your email")
@@ -80,7 +80,7 @@ def login_process():
         flash("Incorrect password")
         return redirect("/login")
 
-    session["user_id"] = user.user_id        #save the user_id in session dict.
+    session["user_id"] = user.user_id      #save the user_id in session dict.
 
     flash("Logged in")
     return redirect("/")
@@ -97,22 +97,37 @@ def logout():
     return redirect("/welcome")
 
 
-@app.route("/jobs")
-def movie_list():
-    """Show list of jobs based on user input."""
+@app.route("/jobs_title")
+def job_list_title():
+    """Show list of jobs based on title user inputs."""
 
-    title = request.form["job title"]
+    # first starting with specifying the job title 
 
-    jobs = Job.query.filter_by(title=title).all()
-    return render_template("job_listings.html", )
+    title = request.args.get("job title")
+
+    #returns list of job objects 
+    search = f"%{title}%"
+    jobs = Job.query.filter(Job.title.like(search)).all()
+    return render_template("job_listings.html", jobs=jobs)
+
+@app.route("/jobs_location")
+def job_list_location():
+    """Show list of jobs based on location user inputs."""
+
+    location = request.args.get("job location")
+    updated_location = f"%{location}%"
+
+    jobs = Job.query.filter(Job.location.like(updated_location)).all()
+    return render_template("job_listings.html", jobs=jobs)
+
+@app.route("/jobs_both")
+def job_list():
+    """Show list of jobs based on location and title user inputs."""
+
+    both = request.args.get("both")
 
 
 
-@app.route('/job_listings')
-def display_jobs():
-    """Page that displays all jobs specific to User's inputs on search page"""
-
-    return render_template("job_listings.html")
 
 
 
