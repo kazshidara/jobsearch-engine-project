@@ -11,7 +11,7 @@ from model import connect_to_db, db, User, Job, Rating
 app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
-app.secret_key = "ABC"
+app.secret_key = "Yeah you wish you knew"
 
 app.jinja_env.undefined = StrictUndefined
 
@@ -22,7 +22,13 @@ def index():
 
     return render_template("index.html")
 
-@app.route('/register')
+@app.route('/welcome')
+def welcome():
+    """Page where user can sign in or sign up"""
+
+    return render_template("welcome_page.html")
+
+@app.route('/register', methods=['GET'])
 def register_form():
     """Show form for user signup."""
 
@@ -49,7 +55,7 @@ def register_process():
     return redirect("/")
 
 
-@app.route('/login', methods=['GET'])
+@app.route('/login')
 def login_form():
     """Show login form."""
 
@@ -64,37 +70,41 @@ def login_process():
     email = request.form["email"]
     password = request.form["password"]
 
-    user = User.query.filter_by(email=email).first()
+    user = User.query.filter_by(email=email).first()    #querying into db for email
 
     if not user:
-        flash("No such user")
+        flash("Sorry, we don't recognize your email")
         return redirect("/login")
 
     if user.password != password:
         flash("Incorrect password")
         return redirect("/login")
 
-    session["user_id"] = user.user_id
+    session["user_id"] = user.user_id        #save the user_id in session dict.
 
     flash("Logged in")
-    return redirect(f"/users/{user.user_id}")
+    return redirect("/")
 
 
 @app.route('/logout')
 def logout():
     """Log out."""
 
-    del session["user_id"]
-    flash("Logged Out.")
-    return redirect("/")
+    print(session)          # to see if user_id is actually being deleted 
+    del session["user_id"]  
+    print(session)            #deleting the user_id from session dict.
+    flash("Successfully Logged Out")
+    return redirect("/welcome")
 
 
-@app.route("/movies")
+@app.route("/jobs")
 def movie_list():
-    """Show list of movies."""
+    """Show list of jobs based on user input."""
 
-    movies = Movie.query.order_by('title').all()
-    return render_template("movie_list.html", movies=movies)
+    title = request.form["job title"]
+
+    jobs = Job.query.filter_by(title=title).all()
+    return render_template("job_listings.html", )
 
 
 
