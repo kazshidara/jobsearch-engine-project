@@ -3,16 +3,45 @@
 {% block content %}
 
 
+    <div>
+        <h1>{{ job['company'] }}</h1>
+            <h2>Job Title: {{ job['title'] }}</h2>
+            <p> Location: {{ job['location']}}</p>
+            <p> {{ job['released_at'] }} (days ago)</p>
+        
+            <!-- call API again to extract other info -->
 
-<img src="">Company Logo here!
-<div>
-    <h3>"Company"</h3>
-    <h3>"Job Title"</h3>
-    <h4>"Location"</h4>
-</div>
-<div>
-    
-</div>
+    </div>
+
+    <br><br><br>
+
+    <!-- Display the average rating for the company and job listing here -->
+    <div>
+        <h1>RATING</h1>
+        <h4> Company Rating: </h4><p>Generate average company rating and input here!</p>
+        <h4> Average Rating of Job Role: </h4> <p>Generate average rating for this job posting and input here! </p> 
+        
+
+    </div>    
+
+    <div>
+        <h3>It looks like you've applyed to this job before, how was your experience?</h3>
+        <form action="/submit?job_id={{ job.job_id }}" method="POST" id="radio-form">
+            <p>Please select how far you got in the application process:</p>
+                <input type="radio" name="applyed" value="1"> Applyed to this job<br>
+                <input type="radio" name="recruiter" value="2"> Recruiter reached out to me<br>
+                <input type="radio" name="phone" value="3"> Phone Screen<br>  
+                <input type="radio" name="onsite" value="4"> Onsite Interview<br>  
+                <input type="radio" name="offer" value="5"> They extended an offer!<br>      
+                <input type="submit" value="Submit">
+        </form>
+
+    </div>
+           
 
 
 {% endblock %}
+
+<script type="text/javascript">
+
+</script>

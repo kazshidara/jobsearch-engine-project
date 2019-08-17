@@ -8,8 +8,10 @@
             <h3>Job Title: {{ job['title'] }}</h6>
             <p> Location: {{ job['location'] }}</p>
             <p>{{ job['released_at'] }} (days ago)</p>
+            <a href="/profile?job_id={{job.job_id}}"><button>View Job</button></a>
             <br>
             <br>
+
 
     {% endfor %}
 </div>
@@ -17,3 +19,5 @@
 
 
 {% endblock %}
+
+
