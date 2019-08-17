@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+
 {% block title %}Job Profile{% endblock %}
 {% block content %}
 
@@ -28,11 +29,11 @@
         <h3>It looks like you've applyed to this job before, how was your experience?</h3>
         <form action="/submit?job_id={{ job.job_id }}" method="POST" id="radio-form">
             <p>Please select how far you got in the application process:</p>
-                <input type="radio" name="applyed" value="1"> Applyed to this job<br>
-                <input type="radio" name="recruiter" value="2"> Recruiter reached out to me<br>
-                <input type="radio" name="phone" value="3"> Phone Screen<br>  
-                <input type="radio" name="onsite" value="4"> Onsite Interview<br>  
-                <input type="radio" name="offer" value="5"> They extended an offer!<br>      
+                <input type="radio" name="option" value="1"> Applyed to this job<br>
+                <input type="radio" name="option" value="2"> Recruiter reached out to me<br>
+                <input type="radio" name="option" value="3"> Phone Screen<br>  
+                <input type="radio" name="option" value="4"> Onsite Interview<br>  
+                <input type="radio" name="option" value="5"> They extended an offer!<br>      
                 <input type="submit" value="Submit">
         </form>
 

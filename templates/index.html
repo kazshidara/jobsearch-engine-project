@@ -2,19 +2,23 @@
 {% block title %}Search Page{% endblock %}
 
 
+
 {% block content %}
 
 <!-- <div> -->
-        <!-- user can search for just a job title -->
+
+
+    <!-- user can search for just a job title -->
     <form action="/jobs_title">
         <input type="text" name="job title" placeholder="Search by Job Title">
         <input type="submit">
     </form>
-        <!-- user can search for a specific location -->
+    <!-- user can search for a specific location -->
     <form action="/jobs_location">
         <input type="text" name="job location" placeholder="Search by Location">
-        <input type="submit">
-    </form>   
+        <input type="submit">     
+    </form>    
+
         <!--  Search for both the job title and location as a single search -->
         
    
@@ -22,3 +26,15 @@
 
 
 {% endblock %}
+    <form action="/jobs_both" name= "both">
+        <p action= "jobs_title">
+            <input type="text" name="job title" placeholder="Search Job Title">
+        </p>
+
+        <p action = "jobs_location">
+            <input type="text" name="job location" placeholder="Search by Location">
+        </p>
+
+        <input type="submit" name="Submit">
+    </form>
+   
