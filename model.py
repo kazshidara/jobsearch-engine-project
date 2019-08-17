@@ -25,6 +25,7 @@ class User(db.Model):
     lname = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(20), nullable=False)
+    #columns to see if user has had past experience applying to a company (2)
     
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -44,6 +45,7 @@ class Job(db.Model):
     company = db.Column(db.String(100), nullable=False)
     location = db.Column(db.String(100), nullable=False)
     released_at = db.Column(db.DateTime, nullable=True)
+    # job_url = db.Column(db.String, nullable=False, )
     github_job_uid = db.Column(db.String, nullable=False, index=True, unique=True)
     #able to index into this column for each job listing if user wants more info about a particular job
 

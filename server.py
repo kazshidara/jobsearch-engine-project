@@ -52,10 +52,10 @@ def register_process():
     db.session.commit()
 
     flash(f"User {email} added.")
-    return redirect("/")
+    return redirect("/welcome")
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET'])
 def login_form():
     """Show login form."""
 
@@ -82,16 +82,18 @@ def login_process():
 
     session["user_id"] = user.user_id      #save the user_id in session dict.
 
+    print(session)
+
     flash("Logged in")
     return redirect("/")
 
 
 @app.route('/logout')
 def logout():
-    """Log out."""
+    """Log out user."""
 
     print(session)          # to see if user_id is actually being deleted 
-    del session["user_id"]  
+    session.clear()  
     print(session)            #deleting the user_id from session dict.
     flash("Successfully Logged Out")
     return redirect("/welcome")
@@ -106,8 +108,8 @@ def job_list_title():
     title = request.args.get("job title")
 
     #returns list of job objects 
-    search = f"%{title}%"
-    jobs = Job.query.filter(Job.title.like(search)).all()
+    updated_title = f"%{title}%"
+    jobs = Job.query.filter(Job.title.like(updated_title)).all()
     return render_template("job_listings.html", jobs=jobs)
 
 @app.route("/jobs_location")
@@ -127,6 +129,9 @@ def job_list():
     """Show list of jobs based on location and title user inputs."""
 
     both = request.args.get("both")
+    updated_both = f'%{both}%'
+
+  
 #<---------------------------------------------------------------------------->
 
 
@@ -140,16 +145,23 @@ def job_profile():
     return render_template('job.html', job=job)
 
 
+@app.route("/rating", methods=['GET'])
+def rating_form():
+    """If user has stated in registration that they have experience applying to 
+        the job, show them rating form. If not, proceed to job profile. 
+    """
+    return render_template("rating_form.html")
 
 
+#RATING FORM -- APPLYED OPTION ROUTE
 @app.route("/submit", methods=['POST'])
-def score_job_listing():
+def score_job_listing_1():
     """Allow user to submit a rating for a job listing"""
 
     job_id = request.args.get('job_id')
   
     # what the user checked 
-    score_value = request.form["applyed"]
+    score_value = request.form["option"]
 
     # first confirm if they are logged in.user_id in session 
     user_id = session.get('user_id')
@@ -177,14 +189,6 @@ def score_job_listing():
 
     return redirect("/profile")
  
-    
-
-
-
-   
-
-
-
 
 
 
