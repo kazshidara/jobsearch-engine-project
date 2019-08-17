@@ -120,11 +120,69 @@ def job_list_location():
     jobs = Job.query.filter(Job.location.like(updated_location)).all()
     return render_template("job_listings.html", jobs=jobs)
 
+
+# <!!!!!!!------WORK ON THIS AFTER YOU FINISH RATING THE JOB----------!!!!!!!!>
 @app.route("/jobs_both")
 def job_list():
     """Show list of jobs based on location and title user inputs."""
 
     both = request.args.get("both")
+#<---------------------------------------------------------------------------->
+
+
+@app.route("/profile")
+def job_profile():
+    """Show profile of job that user clicks on"""
+
+    job_id = request.args.get('job_id')
+    job = Job.query.get(job_id)
+    
+    return render_template('job.html', job=job)
+
+
+
+
+@app.route("/submit", methods=['POST'])
+def score_job_listing():
+    """Allow user to submit a rating for a job listing"""
+
+    job_id = request.args.get('job_id')
+  
+    # what the user checked 
+    score_value = request.form["applyed"]
+
+    # first confirm if they are logged in.user_id in session 
+    user_id = session.get('user_id')
+ 
+
+    if not user_id:
+        raise Exception("You're not logged in.")
+        return redirect("/login")
+    if user_id:
+        #checking to see if user already rated this job 
+        rating = Rating.query.filter_by(user_id=user_id, job_id=job_id).first()
+        print(rating)
+        #if there is a rating already there, don't allow user to rate that job again
+        if rating:
+            flash("You've already rated this job listing")
+        else: 
+            rating_value = Rating(user_id=user_id, job_id=job_id, rating=int(score_value))
+            print(rating_value)
+            flash("Thank you, your rating was added!")
+
+        db.session.add(rating_value)
+
+
+    db.session.commit()
+
+    return redirect("/profile")
+ 
+    
+
+
+
+   
+
 
 
 
