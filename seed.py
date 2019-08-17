@@ -43,7 +43,7 @@ def load_jobs():
 
     print("Jobs")
     # Delete all rows in table, so if we need to run this a second time,
-    # we won't be trying to add duplicate users
+    # we won't be trying to add duplicate jobs
     Job.query.delete()
 
     # Importing function that returns json of all CA job listings after API call 
@@ -71,6 +71,9 @@ def load_jobs():
 
 def load_ratings():
     """Load ratings into database."""
+
+    # make a separate text file with previously rated companies and job postings 
+    # to showcase average functionality 
 
 
 
