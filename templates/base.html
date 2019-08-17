@@ -2,6 +2,21 @@
 <html>
 <head>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  
+    {% if session %}   
+        <a href="/logout"><button>Log Out</button></a>
+    {% else %}
+        <a href="/login"><button>Sign In</button></a>
+    {% endif %}
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <class=flashes>
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
 </head>
 
 <body>
@@ -9,6 +24,9 @@
   <hr>
 
   {% block content %} Put Content HERE! {% endblock %}
+
+
+
 
 </body>
 </html>
