@@ -2,10 +2,12 @@
 
 from jinja2 import StrictUndefined
 
-from flask import (Flask, render_template, redirect, request, flash, session)
+from flask import (Flask, render_template, redirect, request, flash, session, url_for)
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, User, Job, Rating
+
+from API import get_api_data
 
 
 app = Flask(__name__)
@@ -91,58 +93,63 @@ def login_process():
 @app.route('/logout')
 def logout():
     """Log out user."""
-
-    print(session)          # to see if user_id is actually being deleted 
+    
     session.clear()  
-    print(session)            #deleting the user_id from session dict.
     flash("Successfully Logged Out")
+
     return redirect("/welcome")
 
 
-@app.route("/jobs_title")
-def job_list_title():
-    """Show list of jobs based on title user inputs."""
 
-    # first starting with specifying the job title 
-
-    title = request.args.get("job title")
-
-    #returns list of job objects 
-    updated_title = f"%{title}%"
-    jobs = Job.query.filter(Job.title.like(updated_title)).all()
-    return render_template("job_listings.html", jobs=jobs)
-
-@app.route("/jobs_location")
+@app.route("/jobs_search")
 def job_list_location():
     """Show list of jobs based on location user inputs."""
 
     location = request.args.get("job location")
-    updated_location = f"%{location}%"
+    title = request.args.get("job title")
 
-    jobs = Job.query.filter(Job.location.like(updated_location)).all()
+    jobs_query = Job.query        #query for all jobs initially 
+
+    if location:                    #if location is specified, filter for those jobs
+        updated_location = f"%{location}%"
+
+        jobs_query = jobs_query.filter(Job.location.like(updated_location))
+
+    if title:                       #if title is specified, filter for those jobs
+        updated_title = f"%{title}%"
+        jobs_query = jobs_query.filter(Job.title.like(updated_title))
+
+    jobs = jobs_query.all()            #set jobs as all those jobs regardless of inputs 
+
+    if not jobs:
+        flash("Sorry, we could not find any jobs that matched your specification")
+        return redirect("/")
+
     return render_template("job_listings.html", jobs=jobs)
 
 
-# <!!!!!!!------WORK ON THIS AFTER YOU FINISH RATING THE JOB----------!!!!!!!!>
-@app.route("/jobs_both")
-def job_list():
-    """Show list of jobs based on location and title user inputs."""
-
-    both = request.args.get("both")
-    updated_both = f'%{both}%'
-
-  
-#<---------------------------------------------------------------------------->
 
 
 @app.route("/profile")
 def job_profile():
     """Show profile of job that user clicks on"""
 
-    job_id = request.args.get('job_id')
-    job = Job.query.get(job_id)
+    jobs_json = get_api_data()          #return a list of job objects from API
+
+    job_id = request.args.get('job_id')  #get the specific job_id user requests 
+    job = Job.query.get(job_id)      #return job object of specified job 
+    for each_job in jobs_json:            #for each job object from the API call 
+        if job.github_job_uid == each_job['id']:
+            job_type = each_job['type']
+            company_url = each_job['company_url']
+            description = each_job['description']
+            how_to_apply = each_job['how_to_apply']
+
     
-    return render_template('job.html', job=job)
+    
+    return render_template('job.html', job=job, each_job=each_job, job_type=job_type, 
+                            company_url=company_url, description=description, 
+                            how_to_apply=how_to_apply)
 
 
 @app.route("/rating", methods=['GET'])
@@ -150,46 +157,58 @@ def rating_form():
     """If user has stated in registration that they have experience applying to 
         the job, show them rating form. If not, proceed to job profile. 
     """
-    return render_template("rating_form.html")
-
-
-#RATING FORM -- APPLYED OPTION ROUTE
-@app.route("/submit", methods=['POST'])
-def score_job_listing_1():
-    """Allow user to submit a rating for a job listing"""
 
     job_id = request.args.get('job_id')
-  
-    # what the user checked 
-    score_value = request.form["option"]
+    job = Job.query.get(job_id)
+    return render_template("rating_form.html", job=job)
 
-    # first confirm if they are logged in.user_id in session 
+
+#after user submits rating for a job listing, they 're brought to this route
+@app.route("/rating", methods=['POST'])
+def record_rating():
+    """Allow user to submit a rating for a job listing"""
+
+
+    #getting job id from the form user submits 
+    job_id = request.form['job_id']
+      
+    # what the user rated the job  
+    score_value = request.form['option']
+
+    # first confirm if they are logged in --> user_id in session 
     user_id = session.get('user_id')
- 
-
+    
+     
     if not user_id:
-        raise Exception("You're not logged in.")
+        flash("You're not logged in.")
         return redirect("/login")
-    if user_id:
-        #checking to see if user already rated this job 
-        rating = Rating.query.filter_by(user_id=user_id, job_id=job_id).first()
-        print(rating)
-        #if there is a rating already there, don't allow user to rate that job again
-        if rating:
-            flash("You've already rated this job listing")
-        else: 
-            rating_value = Rating(user_id=user_id, job_id=job_id, rating=int(score_value))
-            print(rating_value)
+    else:
+      
+        #doing a joined load so that only 1 query is sent to server 
+        user = User.query.options(db.joinedload('ratings')).get(user_id)
+        
+        job = Job.query.get(job_id)
+
+        #create a new list that has all the job objects that user has rated already
+        #user.ratings = all the ratings that specific user has rated 
+        jobs_rated = [rating.job for rating in user.ratings]
+       
+        if job in jobs_rated:
+            flash("You've already rated this job posting!!")
+        else:
+            # if user hasn't rated the job listing yet, allow them to submit a rating
+            # -->don't need to pass in user_id or job_id b/c of unique constraints
+            rating = Rating(rating=int(score_value), job=job)     
+            user.ratings.append(rating)   #automatically appends new rating into user.ratings list and into DB 
             flash("Thank you, your rating was added!")
-
-        db.session.add(rating_value)
-
+    
 
     db.session.commit()
 
-    return redirect("/profile")
+    #redirecting back to specific job's profile page 
+    return redirect(f"/profile?job_id={job_id}")
+            
  
-
 
 
 
