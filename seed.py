@@ -75,6 +75,31 @@ def load_ratings():
     # make a separate text file with previously rated companies and job postings 
     # to showcase average functionality 
 
+    print("Ratings")
+
+    # Delete all rows in table, so if we need to run this a second time,
+    # we won't be trying to add duplicate users
+    Rating.query.delete()
+
+    # Read u.rating file and insert data
+    for row in open("seed_data/u.rating"):
+        row = row.rstrip()
+        rating_id, job_id, user_id, rating = row.split("|")
+
+        rating = Rating(rating_id=rating_id,
+                        job_id=job_id,
+                        user_id=user_id,
+                        rating=rating)
+        print(rating)
+
+
+
+        # We need to add to the session or it won't ever be stored
+        db.session.add(rating)
+
+    # Once we're done, we should commit our work
+    db.session.commit()
+
 
 
 
