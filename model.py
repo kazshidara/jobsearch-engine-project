@@ -55,6 +55,9 @@ class Job(db.Model):
         return f"<Job company={self.company} title={self.title}>"
 
 
+    #CREATE METHODS that take a job instance and calculates the average rating 
+
+
 class Rating(db.Model):
     """Rating of a job (posting) by a user."""
 
@@ -64,8 +67,8 @@ class Rating(db.Model):
     rating_id = db.Column(db.Integer,
                           autoincrement=True,
                           primary_key=True)
-    job_id = db.Column(db.Integer, db.ForeignKey('jobs_table.job_id'))
-    user_id = db.Column(db.Integer, db.ForeignKey('users_table.user_id'))
+    job_id = db.Column(db.Integer, db.ForeignKey('jobs_table.job_id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users_table.user_id'), nullable=False)
     rating = db.Column(db.Integer, nullable=True)
 
 
@@ -74,13 +77,17 @@ class Rating(db.Model):
     
     # Define relationship to user
     user = db.relationship("User",
-                           backref=db.backref("ratings_table",
-                                              order_by=rating_id))
+                           backref=db.backref("ratings",
+                                              order_by=rating_id))     
+
+   
 
     # Define relationship to job
     job = db.relationship("Job",
-                            backref=db.backref("ratings_table",
+                            backref=db.backref("ratings",
                                                order_by=rating_id))
+
+
 
     def __repr__(self):
         """Provide helpful representation when printed."""
