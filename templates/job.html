@@ -9,40 +9,74 @@
             <h2>Job Title: {{ job['title'] }}</h2>
             <p> Location: {{ job['location']}}</p>
             <p> {{ job['released_at'] }} (days ago)</p>
-        
+            <p> Type: {{ job_type }}</p>
+
+            <p> {{ description|safe }}</p>
+
+            <p> How to Apply : {{ how_to_apply|safe }}</p>
+            <p> Company URL: {{ company_url }}</p>
+    </div>
             <!-- call API again to extract other info -->
 
-    </div>
 
     <br><br><br>
 
     <!-- Display the average rating for the company and job listing here -->
+
     <div>
         <h1>RATING</h1>
-        <h4> Company Rating: </h4><p>Generate average company rating and input here!</p>
-        <h4> Average Rating of Job Role: </h4> <p>Generate average rating for this job posting and input here! </p> 
+        <!-- <h4> Company Rating: </h4>
+        <p name= "company_avg"></p> 
+        <br> -->
         
+        <b>Average Rating:</b><span id='avg_rating'> unknown </span>
 
-    </div>    
+        <a href="/average?job_id={{job.job_id}}" method='GET' id="average-button"><button>Get Average Rating </button></a>
 
-    <div>
-        <h3>It looks like you've applyed to this job before, how was your experience?</h3>
-        <form action="/submit?job_id={{ job.job_id }}" method="POST" id="radio-form">
-            <p>Please select how far you got in the application process:</p>
-                <input type="radio" name="option" value="1"> Applyed to this job<br>
-                <input type="radio" name="option" value="2"> Recruiter reached out to me<br>
-                <input type="radio" name="option" value="3"> Phone Screen<br>  
-                <input type="radio" name="option" value="4"> Onsite Interview<br>  
-                <input type="radio" name="option" value="5"> They extended an offer!<br>      
-                <input type="submit" value="Submit">
-        </form>
+        <script type="text/javascript">
+            
+            document.getElementById('average-button').onclick() = function() {
+
+                function getAvg(response) {
+                    $('#avg_rating').html(response)
+                };
+
+                $.get('/average', getAvg);
+            } 
+            
+
+        </script>
+
 
     </div>
-           
+
+    <div>
+        <b>Have you applied to this job before?</b>   
+        <a href="/rating?job_id={{job.job_id}}" method='GET'><button> Rate this Job </button></a>
+
+    </div>
+
+    
+    
+
 
 
 {% endblock %}
 
-<script type="text/javascript">
 
-</script>
+
+document.getElementById('getInfo').onclick = function() {
+  function callAPI(response) {
+    
+    const terrain = response['climate'];
+    const climate = response['terrain'];
+    const population = response['population'];
+    $('#terrain').html(terrain);
+    $('#climate').html(climate);
+    $('#population').html(population);
+  
+ }
+  $.get('https://swapi.co/api/planets/1/', callAPI)
+}
+
+

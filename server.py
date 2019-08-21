@@ -9,6 +9,8 @@ from model import connect_to_db, db, User, Job, Rating
 
 from API import get_api_data
 
+from statistics import mean
+
 
 app = Flask(__name__)
 
@@ -130,7 +132,7 @@ def job_list_location():
 
 
 
-@app.route("/profile")
+@app.route("/profile", methods=['GET'])
 def job_profile():
     """Show profile of job that user clicks on"""
 
@@ -192,6 +194,7 @@ def record_rating():
         #create a new list that has all the job objects that user has rated already
         #user.ratings = all the ratings that specific user has rated 
         jobs_rated = [rating.job for rating in user.ratings]
+        print(user.ratings)
        
         if job in jobs_rated:
             flash("You've already rated this job posting!!")
@@ -209,6 +212,37 @@ def record_rating():
     return redirect(f"/profile?job_id={job_id}")
             
  
+
+@app.route("/average", methods=['GET'])
+def return_average_rating():
+    """Returns the average rating for a specific job posting"""
+
+    job_id = request.args.get('job_id')
+    rating = Job.query.options(db.joinedload('ratings')).get(job_id)    
+    job = Job.query.get(job_id)      #get the job_id of the specific job posting 
+                 #returns list of rating objects of the job (all ratings of the job)
+    
+    ratings_list = []
+    for each_rating in job.ratings: 
+        ratings_list.append(each_rating.rating)
+        average = round(mean(ratings_list), 1)
+
+    return str(average)
+
+    
+
+  
+              
+
+
+
+
+
+
+
+    
+
+
 
 
 
