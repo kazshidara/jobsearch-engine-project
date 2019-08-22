@@ -197,7 +197,8 @@ def record_rating():
         print(user.ratings)
        
         if job in jobs_rated:
-            flash("You've already rated this job posting!!")
+            Raise("You've already rated this job posting!!")
+
         else:
             # if user hasn't rated the job listing yet, allow them to submit a rating
             # -->don't need to pass in user_id or job_id b/c of unique constraints
@@ -226,13 +227,19 @@ def return_average_rating():
     for each_rating in job.ratings: 
         ratings_list.append(each_rating.rating)
         average = round(mean(ratings_list), 1)
-
-    return str(average)
+    if average is None:
+        return "No average rating available!"
+    else:
+        return str(average)
 
     
 
-  
-              
+
+# @app.route("/company_avg", methods=['GET'])
+# def return_company_average():
+#     """Returns the average rating for a Company via multiple job postings and ratings."""
+
+
 
 
 

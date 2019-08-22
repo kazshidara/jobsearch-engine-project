@@ -29,22 +29,23 @@
         <p name= "company_avg"></p> 
         <br> -->
         
-        <b>Average Rating:</b><span id='avg_rating'> unknown </span>
+        <b>Average Rating for this Job:    </b><span id='avg_rating'></span>
 
-        <a href="/average?job_id={{job.job_id}}" method='GET' id="average-button"><button>Get Average Rating </button></a>
+        <a href="/average?job_id={{job.job_id}}" method='GET' id="average-button"><button>Get Average Rating</button></a>
 
         <script type="text/javascript">
             
-            document.getElementById('average-button').onclick() = function() {
+            document.getElementById('average-button').onclick = function(evt) {
+    
+                evt.preventDefault();
 
                 function getAvg(response) {
-                    $('#avg_rating').html(response)
-                };
+                    $('#avg_rating').html(response);
+                }
 
-                $.get('/average', getAvg);
-            } 
+                $.get('/average?job_id={{job.job_id}}', getAvg);
+            }
             
-
         </script>
 
 
@@ -57,26 +58,8 @@
     </div>
 
     
-    
-
 
 
 {% endblock %}
-
-
-
-document.getElementById('getInfo').onclick = function() {
-  function callAPI(response) {
-    
-    const terrain = response['climate'];
-    const climate = response['terrain'];
-    const population = response['population'];
-    $('#terrain').html(terrain);
-    $('#climate').html(climate);
-    $('#population').html(population);
-  
- }
-  $.get('https://swapi.co/api/planets/1/', callAPI)
-}
 
 
