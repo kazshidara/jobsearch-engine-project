@@ -11,6 +11,10 @@ from API import get_api_data
 
 from statistics import mean
 
+import requests
+import json
+
+
 
 app = Flask(__name__)
 
@@ -133,25 +137,30 @@ def job_list_location():
 
 
 @app.route("/job_profile", methods=['GET'])
-def show_job_profile():
-    """Show profile of job that user clicks on"""
+def job_profile():
+    """Show profile of job that user clicks on"""   
 
-    jobs_json = get_api_data()          #return a list of job objects from API
+    job_id = request.args.get('job_id')  
+    job = Job.query.get(job_id) 
+    github_job_uid = job.github_job_uid  
+ 
+    # requesting info about the job we clicked on from API
+    url = f"https://jobs.github.com/positions/{github_job_uid}.json"
 
-    job_id = request.args.get('job_id')  #get the specific job_id user requests 
-    job = Job.query.get(job_id)      #return job object of specified job 
-    for each_job in jobs_json:            #for each job object from the API call 
-        if job.github_job_uid == each_job['id']:
-            job_type = each_job['type']
-            company_url = each_job['company_url']
-            description = each_job['description']
-            how_to_apply = each_job['how_to_apply']
+    response = requests.get(url)
+    data = response.json()
 
-    
-    
-    return render_template('job.html', job=job, each_job=each_job, job_type=job_type, 
+          
+    job_type = data['type']
+    company_url = data['company_url']
+    description = data['description']
+    how_to_apply = data['how_to_apply']
+ 
+
+    return render_template('job.html', job=job, data=data, job_type=job_type, 
                             company_url=company_url, description=description, 
                             how_to_apply=how_to_apply)
+
 
 
 @app.route("/user_profile", methods=['GET'])
