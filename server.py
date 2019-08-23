@@ -132,8 +132,8 @@ def job_list_location():
 
 
 
-@app.route("/profile", methods=['GET'])
-def job_profile():
+@app.route("/job_profile", methods=['GET'])
+def show_job_profile():
     """Show profile of job that user clicks on"""
 
     jobs_json = get_api_data()          #return a list of job objects from API
@@ -152,6 +152,19 @@ def job_profile():
     return render_template('job.html', job=job, each_job=each_job, job_type=job_type, 
                             company_url=company_url, description=description, 
                             how_to_apply=how_to_apply)
+
+
+@app.route("/user_profile", methods=['GET'])
+def show_user_profile():
+    """Show profile of user that's currently logged in."""
+
+    
+
+    user_id = session.get('user_id')
+    user = User.query.get(user_id)
+ 
+    
+    return render_template('user_profile.html', user=user)
 
 
 @app.route("/rating", methods=['GET'])
@@ -235,22 +248,24 @@ def return_average_rating():
     
 
 
-# @app.route("/company_avg", methods=['GET'])
-# def return_company_average():
-#     """Returns the average rating for a Company via multiple job postings and ratings."""
-
-
-
-
-
-
-
-
-
+@app.route("/company_avg", methods=['GET'])
+def return_company_average():
+    """Returns the average rating for a Company via multiple job postings and ratings."""
     
 
+    job_id = request.args.get('job_id')
+    job = Job.query.get(job_id)
+    # company = Job.query.filter(Job.company == f'{job.company}').all()   #list of all job objects that have 'company'
 
 
+    company = db.session.query(Rating.rating).join(Job, Job.job_id == Rating.job_id).filter(Job.company == f'{job.company}').all()
+
+    ratings_list = []
+    for each_tuple in company:
+        ratings_list.append(each_tuple[0])
+    return str(mean(ratings_list))
+
+    
 
 
 
