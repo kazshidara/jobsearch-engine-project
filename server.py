@@ -63,7 +63,7 @@ def register_process():
         db.session.commit()
 
         flash(f"User {email} added.")
-    return redirect("/welcome")
+    return redirect("/register")
 
 
 @app.route('/login', methods=['GET'])
@@ -250,13 +250,14 @@ def return_average_rating():
     
     ratings_list = []
 
-    for each_rating in job.ratings: 
-        ratings_list.append(each_rating.rating)
-    average = round(mean(ratings_list), 1)
-    if average is None:
-        return "No average rating available!"
-    else:
+    if job.ratings:
+        for each_rating in job.ratings: 
+            ratings_list.append(each_rating.rating)
+        average = round(mean(ratings_list), 1)
         return str(average)
+    else:
+        return "No ratings on this job posting yet!"
+    
 
     
 
@@ -276,6 +277,8 @@ def return_company_average():
     ratings_list = []
     for each_tuple in company:
         ratings_list.append(each_tuple[0])
+    if len(ratings_list) == 0:
+        return "No company average rating available yet!"
     return str(mean(ratings_list))
 
     
