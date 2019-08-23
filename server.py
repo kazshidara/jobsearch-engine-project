@@ -53,13 +53,16 @@ def register_process():
     email = request.form["email"]
     password = request.form["password"]
     
+    email_check = User.query.filter_by(email=email).first()
+    if email_check:
+        flash("The email you entered is already registered, please sign in or enter a different email")
+    else:
+        new_user = User(fname=fname, lname=lname, email=email, password=password)
 
-    new_user = User(fname=fname, lname=lname, email=email, password=password)
+        db.session.add(new_user)
+        db.session.commit()
 
-    db.session.add(new_user)
-    db.session.commit()
-
-    flash(f"User {email} added.")
+        flash(f"User {email} added.")
     return redirect("/welcome")
 
 
@@ -246,9 +249,10 @@ def return_average_rating():
                  #returns list of rating objects of the job (all ratings of the job)
     
     ratings_list = []
+
     for each_rating in job.ratings: 
         ratings_list.append(each_rating.rating)
-        average = round(mean(ratings_list), 1)
+    average = round(mean(ratings_list), 1)
     if average is None:
         return "No average rating available!"
     else:
