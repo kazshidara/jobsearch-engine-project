@@ -54,8 +54,11 @@ def register_process():
     password = request.form["password"]
     
     email_check = User.query.filter_by(email=email).first()
+    password_check = User.query.filter_by(password=password).first()
     if email_check:
         flash("The email you entered is already registered, please sign in or enter a different email")
+    elif password_check:
+        flash("Please register with a different password")
     else:
         new_user = User(fname=fname, lname=lname, email=email, password=password)
 
@@ -215,28 +218,26 @@ def record_rating():
         user = User.query.options(db.joinedload('ratings')).get(user_id)
         
         job = Job.query.get(job_id)
-
+    
         #create a new list that has all the job objects that user has rated already
         #user.ratings = all the ratings that specific user has rated 
         jobs_rated = [rating.job for rating in user.ratings]
-        print(user.ratings)
        
         if job in jobs_rated:
-            Raise("You've already rated this job posting!!")
+            return "You've already rated this job"
 
+            
         else:
             # if user hasn't rated the job listing yet, allow them to submit a rating
             # -->don't need to pass in user_id or job_id b/c of unique constraints
             rating = Rating(rating=int(score_value), job=job)     
             user.ratings.append(rating)   #automatically appends new rating into user.ratings list and into DB 
             flash("Thank you, your rating was added!")
-    
+            db.session.commit()
 
-    db.session.commit()
-
-    #redirecting back to specific job's profile page 
-    return redirect(f"/profile?job_id={job_id}")
+            return "Thank you, your rating has been recorded!"
             
+    
  
 
 @app.route("/average", methods=['GET'])
@@ -269,7 +270,6 @@ def return_company_average():
 
     job_id = request.args.get('job_id')
     job = Job.query.get(job_id)
-    # company = Job.query.filter(Job.company == f'{job.company}').all()   #list of all job objects that have 'company'
 
 
     company = db.session.query(Rating.rating).join(Job, Job.job_id == Rating.job_id).filter(Job.company == f'{job.company}').all()
