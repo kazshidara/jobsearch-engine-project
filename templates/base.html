@@ -2,9 +2,12 @@
 <html>
 <head>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/static/style_sheet.css">
   
     {% if session %}   
         <a href="/logout"><button>Log Out</button></a>
+        <a href="/user_profile"><button>Profile</button></a>
+        <a href="/"><button>Search for a Job</button></a>
     {% else %}
         <a href="/login"><button>Sign In</button></a>
     {% endif %}
@@ -18,10 +21,19 @@
       {% endif %}
     {% endwith %}
 </head>
+<br>
+<br>
 
 <body>
-  
-  <hr>
+
+  <div id="modal" style="display: none;">      <!--takes over entire page -->
+    <div id="modal-contents">
+      
+    </div>
+    
+
+  </div>
+
 
   {% block content %} Put Content HERE! {% endblock %}
 
