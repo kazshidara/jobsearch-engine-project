@@ -10,9 +10,11 @@ from model import connect_to_db, db, User, Job, Rating
 from API import get_api_data
 
 from statistics import mean
+from datetime import datetime, date
 
 import requests
 import json
+
 
 
 
@@ -118,6 +120,7 @@ def job_list_location():
 
     location = request.args.get("job location")
     title = request.args.get("job title")
+    current_date = datetime.today()
 
     jobs_query = Job.query        #query for all jobs initially 
 
@@ -136,7 +139,9 @@ def job_list_location():
         flash("Sorry, we could not find any jobs that matched your specification")
         return redirect("/")
 
-    return render_template("job_listings.html", jobs=jobs)
+    return render_template("job_listings.html", jobs=jobs, current_date=current_date)
+
+
 
 
 
@@ -160,11 +165,13 @@ def job_profile():
     company_url = data['company_url']
     description = data['description']
     how_to_apply = data['how_to_apply']
+    current_date = datetime.today()
+
  
 
     return render_template('job.html', job=job, data=data, job_type=job_type, 
                             company_url=company_url, description=description, 
-                            how_to_apply=how_to_apply)
+                            how_to_apply=how_to_apply,current_date=current_date)
 
 
 

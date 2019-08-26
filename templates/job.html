@@ -8,7 +8,8 @@
         <h1>{{ job['company'] }}</h1>
             <h2>Job Title: {{ job['title'] }}</h2>
             <p> Location: {{ job['location']}}</p>
-            <p> {{ job['released_at'] }} (days ago)</p>
+            <p> {{current_date - job.released_at}}   (days ago)</p>
+           
             <p> Type: {{ job_type }}</p>
 
             <p> {{ description|safe }}</p>
