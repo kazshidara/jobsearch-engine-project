@@ -1,0 +1,61 @@
+
+
+<h3>Rating form for {{ job['title'] }} at {{ job['company'] }}</h3>
+
+    
+
+    <div>
+        <form method="POST" action='/rating'>
+            <input type="hidden" name="job_id" value="{{ job.job_id }}">
+            <p>Please select how far you got in the application process:</p>
+                <input type="radio" name="option" value="0"> Applied to this job<br>
+                <input type="radio" name="option" value="1"> Recruiter reached out to me<br>
+                <input type="radio" name="option" value="2"> Phone Screen<br>  
+                <input type="radio" name="option" value="3"> Onsite Interview<br>  
+                <input type="radio" name="option" value="4"> They extended an offer!<br><br>
+
+                <input type="submit" value="Submit" id="submit-rating-button">
+                <b><span id='space1'></span></b>   
+        </form>
+    
+
+        <script type="text/javascript">
+            
+            document.getElementById('submit-rating-button').onclick = function(evt) {
+    
+                evt.preventDefault();
+
+                function checkUserRatings(response) {
+                    $('#space1').html(response);
+                }
+
+                const ratingVal = $('input[name=option]:checked').val();
+            
+                $.post("/rating?job_id={{job.job_id}}", {rating_val : ratingVal} , checkUserRatings);
+
+
+            }
+
+
+            // Get the modal
+            const modal = document.getElementById('modal');
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+              if (event.target == modal) {
+                modal.style.display = "none";
+              }
+            }
+
+
+            
+        </script>
+    </div>
+    
+
+
+
+   
+
+
+
