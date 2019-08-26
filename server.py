@@ -66,7 +66,7 @@ def register_process():
         db.session.commit()
 
         flash(f"User {email} added.")
-    return redirect("/register")
+    return redirect("/login")
 
 
 @app.route('/login', methods=['GET'])
@@ -96,7 +96,6 @@ def login_process():
 
     session["user_id"] = user.user_id      #save the user_id in session dict.
 
-    print(session)
 
     flash("Logged in")
     return redirect("/")
@@ -183,7 +182,7 @@ def show_user_profile():
 
 
 @app.route("/rating", methods=['GET'])
-def rating_form():
+def show_rating_form():
     """If user has stated in registration that they have experience applying to 
         the job, show them rating form. If not, proceed to job profile. 
     """
@@ -198,22 +197,26 @@ def rating_form():
 def record_rating():
     """Allow user to submit a rating for a job listing"""
 
-
+    print(request.args)
     #getting job id from the form user submits 
-    job_id = request.form['job_id']
+    job_id = request.args.get('job_id')
       
-    # what the user rated the job  
-    score_value = request.form['option']
+
 
     # first confirm if they are logged in --> user_id in session 
     user_id = session.get('user_id')
     
-     
     if not user_id:
         flash("You're not logged in.")
         return redirect("/login")
+
+    
     else:
-      
+        
+        # what the user rated the job  
+        score_value = request.form['rating_val']
+        print("SCOREEE VALUEEEE", score_value)
+        
         #doing a joined load so that only 1 query is sent to server 
         user = User.query.options(db.joinedload('ratings')).get(user_id)
         
@@ -224,6 +227,7 @@ def record_rating():
         jobs_rated = [rating.job for rating in user.ratings]
        
         if job in jobs_rated:
+            
             return "You've already rated this job"
 
             
@@ -232,7 +236,7 @@ def record_rating():
             # -->don't need to pass in user_id or job_id b/c of unique constraints
             rating = Rating(rating=int(score_value), job=job)     
             user.ratings.append(rating)   #automatically appends new rating into user.ratings list and into DB 
-            flash("Thank you, your rating was added!")
+            
             db.session.commit()
 
             return "Thank you, your rating has been recorded!"

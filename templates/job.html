@@ -80,7 +80,23 @@
     
      <div>
             <b>Have you applied to this job before?</b>   
-            <a href="/rating?job_id={{job.job_id}}" method='GET' id="company-avg-button"><button> Rate this Job </button></a>
+            <a href="/rating?job_id={{job.job_id}}" method='GET' id="rate-this-job-button"><button> Rate this Job </button></a>
+            <span id="space"></span>
+
+            <script type="text/javascript">
+
+                document.getElementById('rate-this-job-button').onclick= function(evt) {
+                    evt.preventDefault();
+                    function showForm(response) {
+                        $('#space').html(response);
+                    }   
+
+                    $.get("/rating?job_id={{job.job_id}}", showForm);
+                }
+                
+                
+
+            </script>
         
 
     </div>
