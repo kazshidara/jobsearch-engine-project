@@ -4,6 +4,7 @@
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <link rel="stylesheet" type="text/css" href="/static/style_sheet.css">
   
+  
     {% if session %}   
         <a href="/logout"><button>Log Out</button></a>
         <a href="/user_profile"><button>Profile</button></a>
@@ -20,18 +21,17 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
+
 </head>
 <br>
 <br>
 
 <body>
 
-  <div id="modal" style="display: none;">      <!--takes over entire page -->
-    <div id="modal-contents">
-      
-    </div>
-    
-
+  <div id="modal" style="display: none;">      <!--takes over entire page = container -->
+     <div id="modal-contents">               <!--  shows the form within the container   -->
+      </div>
   </div>
 
 
