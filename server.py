@@ -2,7 +2,7 @@
 
 from jinja2 import StrictUndefined
 
-from flask import (Flask, render_template, redirect, request, flash, session, url_for)
+from flask import (Flask, render_template, redirect, request, flash, session, url_for, jsonify)
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, User, Job, Rating
@@ -269,7 +269,7 @@ def return_average_rating():
         return str(average)
     else:
         return "No ratings on this job posting yet!"
-    
+
 
     
 
@@ -293,7 +293,46 @@ def return_company_average():
     return str(mean(ratings_list))
 
     
+@app.route("/user-ratings.json")
+def return_user_ratings():
+    """Returns all the ratings that a user made to display on a chart."""
+    
+    user_id = session.get('user_id')
 
+    user = User.query.options(db.joinedload('ratings')).get(user_id)
+        
+
+        #create a new list that has all the job objects that user has rated already
+        #user.ratings = all the ratings that specific user has rated 
+    jobs_rated = user.ratings
+    rating_list = []
+    for rating in jobs_rated:
+        print(rating)
+        rating_list.append(rating.rating)
+    print(rating_list)
+    
+    
+    # x_axis has the number of ratings the user has made, counting the number using indices
+    x_axis = []
+    for i,rating in enumerate(jobs_rated):
+        x_axis.append(i+1)
+
+
+    data_dict = {
+
+                "labels": x_axis,
+                "datasets": [
+                    {
+                        "data": rating_list,
+                        "backgroundColor": [
+                            "#99d8c9"],
+                        "hoverBackgroundColor": [
+                            "#FF6384" for color in x_axis]
+                    }]
+            }
+
+  
+    return jsonify(data_dict)
 
 
 

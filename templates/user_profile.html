@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}User Profile{% endblock %}
+
+
+
+{% block content %}
+
+<div>
+    <h1>{{user.fname}} {{user.lname}}</h1>
+    <h3> {{ user.email }}</h3>
+</div>
+
+
+<div class="melon-chart">
+    <canvas id="lineChart"></canvas>
+    <div id="legend" class="chart-legend"></div>
+</div>
+
+<script>
+
+const options = {
+
+      title:{
+        display: true,
+        text: 'Job Search Progress',
+        fontSize: 25,
+        padding: 20,
+
+      },
+      tooltips: {
+        enabled:true,
+        mode: 'nearest',
+        intersect: true,
+        xPadding:10,
+        yPadding:10,
+        position: 'average',
+        callbacks: {
+            label: function(tooltipItem) {
+                    return "HAIIII";
+                }
+            }
+        },
+      legend: {
+        display: false
+      },
+      layout: {
+            padding: {
+                left: 70,
+                right: 70,
+                top: 50,
+                bottom: 50
+            }
+        }
+};
+
+
+    // Make Donut Chart of percent of different types of Melons
+    let myChart = $("#lineChart").get(0).getContext("2d");
+
+    $.get("/user-ratings.json", function (data) {
+      let userLineChart = new Chart(myChart, {
+                                              type: 'line',
+                                              data: data,
+                                              options: options
+                                            });
+      $('#legend').html(userLineChart);
+    });
+
+</script>
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
