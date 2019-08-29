@@ -5,7 +5,7 @@ from jinja2 import StrictUndefined
 from flask import (Flask, render_template, redirect, request, flash, session, url_for, jsonify)
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db, User, Job, Rating
+from model import connect_to_db, db, User, Job, Rating, Savings
 
 from API import get_api_data
 
@@ -14,6 +14,7 @@ from datetime import datetime, date
 
 import requests
 import json
+from functions import days_from_date
 
 
 
@@ -121,6 +122,7 @@ def job_list_location():
     location = request.args.get("job location")
     title = request.args.get("job title")
     current_date = datetime.today()
+    
 
     jobs_query = Job.query        #query for all jobs initially 
 
@@ -138,6 +140,8 @@ def job_list_location():
     if not jobs:
         flash("Sorry, we could not find any jobs that matched your specification")
         return redirect("/")
+
+    
 
     return render_template("job_listings.html", jobs=jobs, current_date=current_date)
 
@@ -165,13 +169,15 @@ def job_profile():
     company_url = data['company_url']
     description = data['description']
     how_to_apply = data['how_to_apply']
-    current_date = datetime.today()
 
- 
+    num_days = days_from_date(job.released_at)
+
+
 
     return render_template('job.html', job=job, data=data, job_type=job_type, 
                             company_url=company_url, description=description, 
-                            how_to_apply=how_to_apply,current_date=current_date)
+                            how_to_apply=how_to_apply,
+                            num_days=num_days)
 
 
 
@@ -179,7 +185,6 @@ def job_profile():
 def show_user_profile():
     """Show profile of user that's currently logged in."""
 
-    
 
     user_id = session.get('user_id')
     user = User.query.get(user_id)
@@ -204,7 +209,6 @@ def show_rating_form():
 def record_rating():
     """Allow user to submit a rating for a job listing"""
 
-    print(request.args)
     #getting job id from the form user submits 
     job_id = request.args.get('job_id')
       
@@ -282,12 +286,18 @@ def return_company_average():
     job_id = request.args.get('job_id')
     job = Job.query.get(job_id)
 
-
-    company = db.session.query(Rating.rating).join(Job, Job.job_id == Rating.job_id).filter(Job.company == f'{job.company}').all()
+    # add where clause to filter results matching the job id we care about
+    #  add another where clause where the rating is not null
+    #  additionally we can group the results by rating (GROUP BY rating)
+    #. and finally we want the average (SELECT AVG(rating))
+    #. | rating |
+    #. | ------ |
+    #. |  3.5.  |
+    company = db.session.query(Rating.rating).innerjoin(Job, Job.job_id == Rating.job_id).filter(Job.company == f'{job.company}').all()
 
     ratings_list = []
     for each_tuple in company:
-        ratings_list.append(each_tuple[0])
+        ratings_list.append(each_tuple)
     if len(ratings_list) == 0:
         return "No company average rating available yet!"
     return str(mean(ratings_list))
@@ -336,6 +346,59 @@ def return_user_ratings():
 
 
 
+
+@app.route("/saved", methods=['GET','POST'])
+def return_saved_jobs():
+    """Returns all the jobs that a user saved."""
+
+    user_id = session.get('user_id')
+    valid_user = User.query.get(user_id) 
+    if not valid_user:
+        flash("Please sign in first to save this job")
+        return redirect("/login")
+
+    else:
+
+        user = User.query.options(db.joinedload('saved_jobs')).get(user_id)
+           
+        job_id = request.args.get('job_id')       
+        job = Job.query.get(job_id)
+
+        if job in user.saved_jobs:
+            flash("You've already saved this job")
+            return redirect(f"/job_profile?job_id={job.job_id}")
+
+        else:
+            save_job = Savings(user_id=user_id, job_id=job_id)
+            print(save_job)
+
+            db.session.add(save_job)
+            db.session.commit()
+
+            flash("This job has been saved to your profile!") 
+
+    return redirect(f"/job_profile?job_id={job.job_id}")
+
+
+
+@app.route("/show-saved", methods=['GET'])
+def show_saved_jobs():
+    """Shows a list of all jobs saved by user."""
+
+    user_id = session.get('user_id')
+    user = User.query.options(db.joinedload('saved_jobs')).get(user_id)
+    saved_jobs = user.saved_jobs
+    current_date = datetime.today()
+
+    return render_template("saved.html", saved_jobs=saved_jobs, current_date=current_date)
+
+
+
+
+
+
+################################################################################
+################################################################################
 
 
 if __name__ == "__main__":

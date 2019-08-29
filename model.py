@@ -31,7 +31,7 @@ class User(db.Model):
     # can do user.saved to get all jobs that user saved
     saved_jobs = db.relationship("Job",
                                  secondary="saved_table",
-                                 backref=db.backref("saved"))
+                                 backref=db.backref("users_saved"))
     
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -93,23 +93,6 @@ class Rating(db.Model):
                             backref=db.backref("ratings",
                                                order_by=rating_id))
 
-
-class Savings(db.Model):
-    """All the jobs that were saved by a user."""
-
-    __tablename__ = "saved_table"
-
-    saved_id = db.Column(db.Integer,
-                          autoincrement=True,
-                          primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users_table.user_id'), nullable=False)
-    job_id = db.Column(db.Integer, db.ForeignKey('jobs_table.job_id'), nullable=False)
-    
-
- 
-
-
-
     def __repr__(self):
         """Provide helpful representation when printed."""
 
@@ -118,6 +101,30 @@ class Savings(db.Model):
                    user_id={self.user_id}
                    rating={self.rating}>"""
 
+
+class Savings(db.Model):
+    """All the jobs that were saved by a user."""
+
+    __tablename__ = "saved_table"
+    __table_args__ = (db.UniqueConstraint('job_id', 'user_id'),)
+
+    saved_id = db.Column(db.Integer,
+                          autoincrement=True,
+                          primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users_table.user_id'), nullable=False)
+    job_id = db.Column(db.Integer, db.ForeignKey('jobs_table.job_id'), nullable=False)
+    
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return f"""<job_id={self.job_id}
+                   user_id={self.user_id}>"""
+
+ 
+
+
+
+   
  
 
 

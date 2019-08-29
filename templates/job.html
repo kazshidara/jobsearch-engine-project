@@ -3,12 +3,16 @@
 {% block title %}Job Profile{% endblock %}
 {% block content %}
 
-
+<br><br><br>
+    <div>
+        <a href="/saved?job_id={{job.job_id}}" method='POST' id="save-button"><button>Save this Job</button></a>
+    </div>
+    
     <div>
         <h1>{{ job['company'] }}</h1>
             <h2>Job Title: {{ job['title'] }}</h2>
             <p> Location: {{ job['location']}}</p>
-            <p> {{current_date - job.released_at}}   (days ago)</p>
+            <p> ({{ num_days }} days ago) </p>
            
             <p> Type: {{ job_type }}</p>
 
@@ -26,9 +30,7 @@
 
     <div>
         <h1>RATING</h1>
-        <!-- <h4> Company Rating: </h4>
-        <p name= "company_avg"></p> 
-        <br> -->
+       
         
         <b>Average Rating for this Job:       </b><span id='avg_rating'></span>
 
