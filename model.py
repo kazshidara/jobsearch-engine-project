@@ -26,6 +26,12 @@ class User(db.Model):
     email = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(20), nullable=False)
     #columns to see if user has had past experience applying to a company (2)
+
+    
+    # can do user.saved to get all jobs that user saved
+    saved_jobs = db.relationship("Job",
+                                 secondary="saved_table",
+                                 backref=db.backref("saved"))
     
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -88,6 +94,21 @@ class Rating(db.Model):
                                                order_by=rating_id))
 
 
+class Savings(db.Model):
+    """All the jobs that were saved by a user."""
+
+    __tablename__ = "saved_table"
+
+    saved_id = db.Column(db.Integer,
+                          autoincrement=True,
+                          primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users_table.user_id'), nullable=False)
+    job_id = db.Column(db.Integer, db.ForeignKey('jobs_table.job_id'), nullable=False)
+    
+
+ 
+
+
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -96,6 +117,8 @@ class Rating(db.Model):
                    job_id={self.job_id}
                    user_id={self.user_id}
                    rating={self.rating}>"""
+
+ 
 
 
 #####################################################################
