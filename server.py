@@ -293,13 +293,16 @@ def return_company_average():
     #. | rating |
     #. | ------ |
     #. |  3.5.  |
-    company = db.session.query(Rating.rating).innerjoin(Job, Job.job_id == Rating.job_id).filter(Job.company == f'{job.company}').all()
-
+    company = db.session.query(Rating.rating).join(Job, Job.job_id == Rating.job_id).filter(Job.company == f'{job.company}').all()
+    
     ratings_list = []
+    
     for each_tuple in company:
-        ratings_list.append(each_tuple)
+        ratings_list.append(each_tuple[0])
+    
     if len(ratings_list) == 0:
         return "No company average rating available yet!"
+    
     return str(mean(ratings_list))
 
     
@@ -310,18 +313,49 @@ def return_user_ratings():
     user_id = session.get('user_id')
 
     user = User.query.options(db.joinedload('ratings')).get(user_id)
-        
+    
+    job_object = db.session.query(Job).join(Rating, Job.job_id == Rating.job_id).filter(Rating.user_id==f'{user_id}').all()
+    print("ALL JOB OBJECTS FOR USERRRRRR", job_object)
+    
+    company_list = []
+    title_list = []
+    location_list = []
+    
+    for job in job_object:
+        company_list.append(job.company)
+        title_list.append(job.title)
+        location_list.append(job.location)
+    print(company_list, title_list, location_list)
 
         #create a new list that has all the job objects that user has rated already
         #user.ratings = all the ratings that specific user has rated 
     jobs_rated = user.ratings
+    
     rating_list = []
+    
+
     for rating in jobs_rated:
         print(rating)
         rating_list.append(rating.rating)
     print(rating_list)
     
+    ######################################################################################
     
+    # First get job objects for each job user has rated(join) in a list
+    # Append necessary information that I want to display on the tooltip into separate lists
+    # "data": [rating_list, company_list, title_list, location_list ]
+
+
+# select * from ratings_table as r inner join (
+# select * from jobs_table) as j on r.job_id = j.job_id 
+# where user_id = 12;
+
+
+
+
+    # ######################################################################################
+
+
     # x_axis has the number of ratings the user has made, counting the number using indices
     x_axis = []
     for i,rating in enumerate(jobs_rated):
@@ -333,7 +367,7 @@ def return_user_ratings():
                 "labels": x_axis,
                 "datasets": [
                     {
-                        "data": rating_list,
+                        "data": [rating_list,company_list, title_list, location_list],
                         "backgroundColor": [
                             "#99d8c9"],
                         "hoverBackgroundColor": [
@@ -391,6 +425,31 @@ def show_saved_jobs():
     current_date = datetime.today()
 
     return render_template("saved.html", saved_jobs=saved_jobs, current_date=current_date)
+
+
+
+
+@app.route("/user-avg-rating", methods=['GET'])
+def show_user_rating_avg():
+    """Shows average rating score for each user."""
+
+    user_id = session.get('user_id')
+
+    user = User.query.options(db.joinedload('ratings')).get(user_id)
+        
+
+        #create a new list that has all the job objects that user has rated already
+        #user.ratings = all the ratings that specific user has rated 
+    jobs_rated = user.ratings
+    rating_list = []
+    for rating in jobs_rated:
+        print(rating)
+        rating_list.append(rating.rating)
+    print(mean(rating_list))
+    return mean(rating_list)
+    
+
+
 
 
 
