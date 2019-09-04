@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Recommended Events{% endblock %}
+
+{% block content %}
+
+  <div>
+
+      <h2>Events recommended for you:</h2>
+
+      <ul>
+        
+        {% for event in events['events'] %}
+        
+
+          <li><h3> {{ event['name']['text'] }} </h3></li><br>
+          <img src="{{event['logo']['url']}}" style="display: right">
+          <p><b> About the event:</b> {{event['summary']}}</p><br>
+            <b>More on this event can be found here:</b><a href="{{ event['url']}}">{{ event['url']}} </a>
+            <br> 
+            <br>
+            <br>
+        
+        
+        {% endfor %}
+
+      </ul>
+
+
+  </div>
+
+{% endblock %}

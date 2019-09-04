@@ -218,10 +218,9 @@ def record_rating():
     user_id = session.get('user_id')
     
     if not user_id:
-        flash("You're not logged in.")
+        flash("You're not logged in. Please login to submit a rating!")
         return redirect("/login")
 
-    
     else:
         
         # what the user rated the job  
@@ -314,18 +313,28 @@ def return_user_ratings():
 
     user = User.query.options(db.joinedload('ratings')).get(user_id)
     
-    job_object = db.session.query(Job).join(Rating, Job.job_id == Rating.job_id).filter(Rating.user_id==f'{user_id}').all()
+    job_object = db.session.query(Job, Rating).join(Rating, Job.job_id == Rating.job_id).filter(Rating.user_id==f'{user_id}').all()
     print("ALL JOB OBJECTS FOR USERRRRRR", job_object)
     
-    company_list = []
-    title_list = []
-    location_list = []
-    
-    for job in job_object:
-        company_list.append(job.company)
-        title_list.append(job.title)
-        location_list.append(job.location)
-    print(company_list, title_list, location_list)
+
+    # Each point in the graph will represent:
+    #  company name
+    #  job title
+    #  location
+
+    user_ratings = []
+    for job in job_object:    
+        print("Job in job list: ", job)
+
+        user_ratings.append({
+            "title" : job[0].title,
+            "company" : job[0].company,
+            "location" : job[0].location,
+            "rating" : job[1].rating
+            })
+    print("USER RATINGS:", user_ratings)
+
+
 
         #create a new list that has all the job objects that user has rated already
         #user.ratings = all the ratings that specific user has rated 
@@ -335,39 +344,21 @@ def return_user_ratings():
     
 
     for rating in jobs_rated:
-        print(rating)
         rating_list.append(rating.rating)
-    print(rating_list)
     
-    ######################################################################################
-    
-    # First get job objects for each job user has rated(join) in a list
-    # Append necessary information that I want to display on the tooltip into separate lists
-    # "data": [rating_list, company_list, title_list, location_list ]
 
-
-# select * from ratings_table as r inner join (
-# select * from jobs_table) as j on r.job_id = j.job_id 
-# where user_id = 12;
-
-
-
-
-    # ######################################################################################
-
-
-    # x_axis has the number of ratings the user has made, counting the number using indices
+    # # x_axis has the number of ratings the user has made, counting the number using indices
     x_axis = []
-    for i,rating in enumerate(jobs_rated):
+    for i,rating in enumerate(user_ratings):
         x_axis.append(i+1)
 
 
     data_dict = {
-
+                "data_points" : user_ratings,
                 "labels": x_axis,
                 "datasets": [
                     {
-                        "data": [rating_list,company_list, title_list, location_list],
+                        "data": rating_list,
                         "backgroundColor": [
                             "#99d8c9"],
                         "hoverBackgroundColor": [
@@ -376,7 +367,7 @@ def return_user_ratings():
             }
 
   
-    return jsonify(data_dict)
+    return jsonify(data_dict)   #data_dict is what gets passed into JS function(data)
 
 
 
@@ -386,8 +377,10 @@ def return_saved_jobs():
     """Returns all the jobs that a user saved."""
 
     user_id = session.get('user_id')
-    valid_user = User.query.get(user_id) 
-    if not valid_user:
+    print(user_id)
+    valid_user = User.query.get(user_id)
+    print("VALIDDD USERRRR", valid_user) 
+    if valid_user is None:
         flash("Please sign in first to save this job")
         return redirect("/login")
 
@@ -450,6 +443,21 @@ def show_user_rating_avg():
     
 
 
+
+@app.route("/user-events")
+def show_user_events():
+    """Calling Eventbrite API and showing a list of user's recommended Eventbrite events"""
+
+
+    payload = {'token' : 'W5TEINASBAG56UPMVLKI'}
+    url = "https://www.eventbriteapi.com/v3/events/search/?q=tech&sort_by=date&location.address=California"
+
+    response = requests.get(url, params=payload)
+
+    events = response.json()
+    
+
+    return render_template("recommended_events.html", events=events)
 
 
 

@@ -1,8 +1,12 @@
 
 import requests
 import json
-from sys import argv
-from pprint import pformat
+
+
+
+EVENTBRITE_URL = "'https://www.eventbriteapi.com/v3/categories?token=W5TEINASBAG56UPMVLKI'"
+
+
 
 
 # edit so that function only calls API for certain job instead of calling the API
@@ -17,18 +21,29 @@ def get_api_data():
     response = requests.get(url)
     data = response.json()
     
-    
-
-
 
     return data # this returned a list of job listing objects 
+
+
+################################################################################
+################################################################################
+def get_events_api():
+    """Calls Eventbrite API and returns a list of events catered to User's progress"""
+
+
+    #this is for tech networking events only  
+    payload = {'token' : 'W5TEINASBAG56UPMVLKI'}
+    url = "https://www.eventbriteapi.com/v3/events/search/?q=tech+networking&sort_by=date&location.address=California"
+
+    response = requests.get(url, params=payload)
+
+    data = response.json()
+
+    return data
     
 
 
-get_api_data()
 
 
-
-
-
+get_events_api()
 

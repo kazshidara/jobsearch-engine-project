@@ -29,6 +29,17 @@
 
 <script>
 
+// function printObject(object, current_output) {
+//   for (var child in object) {
+//     if (child instanceof Object) {
+//       return current_output + printObject(child);
+//     } else {
+//       return current_output + " " + child;
+//     }
+//   }
+// };
+
+
 const options = {
 
       title:{
@@ -42,14 +53,27 @@ const options = {
         enabled:true,
         mode: 'nearest',
         intersect: true,
-        xPadding:10,
-        yPadding:10,
+        xPadding:20,
+        yPadding:20,
         position: 'average',
         callbacks: {
-            label: function(tooltipItem) {
-                    return "HAIIII";
-                }
+            title: function(tooltipItem, data) {
+                  let labelTitle = data["data_points"][tooltipItem[0]['index']]["title"];
+                  
+                  //let labelTitle = tooltipItem[0]['index'] == null ? "NULL " : tooltipItem[0]['index'];
+                  return labelTitle;
+            },
+            label: function(tooltipItem, data) {
+                  let labelCompany = data["data_points"][tooltipItem['index']]["company"];
+
+                  return labelCompany;
+                },
+            afterLabel: function(tooltipItem, data) {
+                  let labelLocation = data["data_points"][tooltipItem['index']]["location"];
+
+                  return labelLocation;
             }
+          }
         },
       legend: {
         display: false
@@ -87,5 +111,8 @@ const options = {
 
 
 {% endblock %}
+
+
+
 
 
