@@ -1,5 +1,3 @@
-"""Job Ratings."""
-
 from jinja2 import StrictUndefined
 
 from flask import (Flask, render_template, redirect, request, flash, session, url_for, jsonify)
@@ -445,22 +443,37 @@ def show_user_rating_avg():
 
 
 @app.route("/user-events")
-def show_user_events():
-    """Calling Eventbrite API and showing a list of user's recommended Eventbrite events"""
+def show_events():
+    """Calling Eventbrite API and showing a list of Eventbrite events happening"""
 
 
     payload = {'token' : 'W5TEINASBAG56UPMVLKI'}
-    url = "https://www.eventbriteapi.com/v3/events/search/?q=tech&sort_by=date&location.address=California"
+    
+    #networking and career events (Good for user average's that are between 0 and 1)
+    url = "https://www.eventbriteapi.com/v3/events/search/?q=software+engineering+networking&sort_by=date&location.address=San+Francisco&location.within=10mi&categories=101%2C102&subcategories=1004%2C2004%2C1010"
+
+    # url = "https://www.eventbriteapi.com/v3/events/search/?q=software+engineering&sort_by=date&location.address=San+Franciso&location.within=10mi&categories=101%2C102&subcategories=1004%2C2004%2C1010&page="
 
     response = requests.get(url, params=payload)
 
     events = response.json()
+
+    # new_dict = {}
+    # for event in events:
+    #     print(event)
+    #     new_dict[event["name"]["text"]] = event
+    #     print(new_dict)
+
+    
+
     
 
     return render_template("recommended_events.html", events=events)
 
 
-
+# @app.route("/user-events")
+# def show_user_events():
+#     """Calling Eventbrite API and showing a list of user's recommended Eventbrite events"""
 
 
 
