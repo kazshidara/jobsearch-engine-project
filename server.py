@@ -450,25 +450,33 @@ def show_events():
     payload = {'token' : 'W5TEINASBAG56UPMVLKI'}
     
     #networking and career events (Good for user average's that are between 0 and 1)
-    url = "https://www.eventbriteapi.com/v3/events/search/?q=software+engineering+networking&sort_by=date&location.address=San+Francisco&location.within=10mi&categories=101%2C102&subcategories=1004%2C2004%2C1010"
+    # url = "https://www.eventbriteapi.com/v3/events/search/?q=software+engineering+networking&sort_by=date&location.address=San+Francisco&location.within=10mi&categories=101%2C102&subcategories=1004%2C2004%2C1010"
 
-    # url = "https://www.eventbriteapi.com/v3/events/search/?q=software+engineering&sort_by=date&location.address=San+Franciso&location.within=10mi&categories=101%2C102&subcategories=1004%2C2004%2C1010&page="
+    #conferences and talk events (Good for user averages that are above 3)
+    # url = "https://www.eventbriteapi.com/v3/events/search/?q=software+engineering+conference&sort_by=date&location.address=San+Francisco&location.within=10mi&categories=101%2C102&subcategories=1001%2C2004%2C1009"
+    
 
+    url = "https://www.eventbriteapi.com/v3/events/search/?q=software+engineering+class&sort_by=date&location.address=San+Francisco&location.within=10mi&categories=101%2C102&subcategories=1001%2C2004%2C1004%2C1010"
+    
     response = requests.get(url, params=payload)
 
     events = response.json()
 
-    # new_dict = {}
-    # for event in events:
-    #     print(event)
-    #     new_dict[event["name"]["text"]] = event
-    #     print(new_dict)
+    new_dict = {}
+    for event in events['events']:
+        print(event['name'])
+        print(event['organization_id'])
+        new_dict[event['organization_id']] = event['name']['text'], event['summary'],event['url'], event['logo']['url']
+    
+    print(new_dict)
 
     
 
     
 
-    return render_template("recommended_events.html", events=events)
+    
+
+    return render_template("recommended_events.html", new_dict=new_dict)
 
 
 # @app.route("/user-events")

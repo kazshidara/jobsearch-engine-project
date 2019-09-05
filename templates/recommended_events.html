@@ -6,17 +6,18 @@
 
   <div>
 
-      <h2>Events recommended for you:</h2>
+      <h2>Based on your Job Search Progress, here are some events we recommend:</h2>
 
       <ul>
         
-        {% for event in events['events'] %}
+        {% for event_key, event_value in new_dict.items() %}
         
 
-          <li><h3> {{ event['name']['text'] }} </h3></li><br>
-          <img src="{{event['logo']['url']}}" style="display: right">
-          <p><b> About the event:</b> {{event['summary']}}.....</p><br>
-            <b>More on this event can be found here:</b><a href="{{ event['url']}}">{{ event['url']}} </a>
+          <li><h3> {{ new_dict[event_key][0] }} </h3></li>
+         
+          <img src="{{new_dict[event_key][3]}}">
+          <p><b> About the event:</b> {{new_dict[event_key][1]}}.....</p><br>
+            <b>More on this event can be found here:</b><a href="{{ new_dict[event_key][2]}}">{{new_dict[event_key][2]}} </a>
             <br> 
             <br>
             <br>
