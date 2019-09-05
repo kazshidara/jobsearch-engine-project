@@ -53,6 +53,7 @@ class Job(db.Model):
     released_at = db.Column(db.DateTime, nullable=True)
     # job_url = db.Column(db.String, nullable=False, )
     github_job_uid = db.Column(db.String, nullable=False, index=True, unique=True)
+    logo = db.Column(db.String, nullable=True)
     #able to index into this column for each job listing if user wants more info about a particular job
 
     def __repr__(self):

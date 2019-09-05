@@ -58,7 +58,8 @@ def load_jobs():
                   company = listing['company'],
                   location = listing['location'],
                   released_at = listing['created_at'],
-                  github_job_uid = listing['id'])
+                  github_job_uid = listing['id'],
+                  logo= listing['company_logo'])
     
         db.session.add(job)
         job_id += 1
@@ -75,30 +76,30 @@ def load_ratings():
     # make a separate text file with previously rated companies and job postings 
     # to showcase average functionality 
 
-    print("Ratings")
+    # print("Ratings")
 
-    # Delete all rows in table, so if we need to run this a second time,
-    # we won't be trying to add duplicate users
-    Rating.query.delete()
+    # # Delete all rows in table, so if we need to run this a second time,
+    # # we won't be trying to add duplicate users
+    # Rating.query.delete()
 
-    # Read u.rating file and insert data
-    for row in open("seed_data/u.rating"):
-        row = row.rstrip()
-        rating_id, job_id, user_id, rating = row.split("|")
+    # # Read u.rating file and insert data
+    # for row in open("seed_data/u.rating"):
+    #     row = row.rstrip()
+    #     rating_id, job_id, user_id, rating = row.split("|")
 
-        rating = Rating(rating_id=rating_id,
-                        job_id=job_id,
-                        user_id=user_id,
-                        rating=rating)
-        print(rating)
+    #     rating = Rating(rating_id=rating_id,
+    #                     job_id=job_id,
+    #                     user_id=user_id,
+    #                     rating=rating)
+    #     print(rating)
 
 
 
-        # We need to add to the session or it won't ever be stored
-        db.session.add(rating)
+    #     # We need to add to the session or it won't ever be stored
+    #     db.session.add(rating)
 
-    # Once we're done, we should commit our work
-    db.session.commit()
+    # # Once we're done, we should commit our work
+    # db.session.commit()
 
 
 

@@ -267,7 +267,19 @@ def return_average_rating():
         for each_rating in job.ratings: 
             ratings_list.append(each_rating.rating)
         average = round(mean(ratings_list), 1)
-        return str(average)
+
+        if 0 < average < 1:
+            response = "On average, applicants who applied to this job didn't hear back"
+        elif 1 <= average < 2:
+            response = "On average, applicants who applied to this job heard back from a recruiter"
+        elif 2 <= average < 3:
+            response = "On average, applicants who applied to this job received a phone screen interview"
+        elif 3 <= average < 4:
+            response = "On average, applicants who applied to this job got through to the onsite interview"
+        else:
+            response = "On average, applicants who applied to this job received a job offer!"
+        
+        return response
     else:
         return "No ratings on this job posting yet!"
 
@@ -296,11 +308,33 @@ def return_company_average():
     
     for each_tuple in company:
         ratings_list.append(each_tuple[0])
+     
     
     if len(ratings_list) == 0:
-        return "No company average rating available yet!"
-    
-    return str(mean(ratings_list))
+        return "No information on this Company yet!"
+
+    else:
+        avg_company_rating = mean(ratings_list)
+
+        if 0 < avg_company_rating < 1:
+            response = "On average, applicants who applied to this company didn't hear back"
+        elif 1 <= avg_company_rating < 2:
+            response = "On average, applicants who applied to this company heard back from a recruiter"
+        elif 2 <= avg_company_rating < 3:
+            response = "On average, applicants who applied to this company received a phone screen interview"
+        elif 3 <= avg_company_rating < 4:
+            response = "On average, applicants who applied to this company got through to the onsite interview"
+        else:
+            response = "On average, applicants who applied to this company received a job offer!"
+        
+        return response
+
+
+
+
+
+
+ 
 
     
 @app.route("/user-ratings.json")
@@ -338,11 +372,11 @@ def return_user_ratings():
         #user.ratings = all the ratings that specific user has rated 
     jobs_rated = user.ratings
     
-    rating_list = []
+    ratings_list = []
     
 
     for rating in jobs_rated:
-        rating_list.append(rating.rating)
+        ratings_list.append(rating.rating)
     
 
     # # x_axis has the number of ratings the user has made, counting the number using indices
@@ -356,7 +390,7 @@ def return_user_ratings():
                 "labels": x_axis,
                 "datasets": [
                     {
-                        "data": rating_list,
+                        "data": ratings_list,
                         "backgroundColor": [
                             "#99d8c9"],
                         "hoverBackgroundColor": [
@@ -446,6 +480,12 @@ def show_user_rating_avg():
 def show_events():
     """Calling Eventbrite API and showing a list of Eventbrite events happening"""
 
+    # user_id = session.get('user_id')
+    # user = User.query.get(user_id)
+    # user_location = "San Francisco"
+    # print(user_location)
+    # This is for getting the user's specific location 
+
 
     payload = {'token' : 'W5TEINASBAG56UPMVLKI'}
     
@@ -455,8 +495,8 @@ def show_events():
     #conferences and talk events (Good for user averages that are above 3)
     # url = "https://www.eventbriteapi.com/v3/events/search/?q=software+engineering+conference&sort_by=date&location.address=San+Francisco&location.within=10mi&categories=101%2C102&subcategories=1001%2C2004%2C1009"
     
-
-    url = "https://www.eventbriteapi.com/v3/events/search/?q=software+engineering+class&sort_by=date&location.address=San+Francisco&location.within=10mi&categories=101%2C102&subcategories=1001%2C2004%2C1004%2C1010"
+    # class events (Good for user averages that are between 1 and 3 - brush up on technical knowledge)
+    url = f"https://www.eventbriteapi.com/v3/events/search/?q=software+engineering+class&sort_by=date&location.address={user_location}&location.within=10mi&categories=101%2C102&subcategories=1001%2C2004%2C1004%2C1010"
     
     response = requests.get(url, params=payload)
 
@@ -464,24 +504,11 @@ def show_events():
 
     new_dict = {}
     for event in events['events']:
-        print(event['name'])
-        print(event['organization_id'])
+
         new_dict[event['organization_id']] = event['name']['text'], event['summary'],event['url'], event['logo']['url']
     
-    print(new_dict)
-
-    
-
-    
-
-    
-
     return render_template("recommended_events.html", new_dict=new_dict)
 
-
-# @app.route("/user-events")
-# def show_user_events():
-#     """Calling Eventbrite API and showing a list of user's recommended Eventbrite events"""
 
 
 
