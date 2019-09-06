@@ -438,9 +438,9 @@ def return_saved_jobs():
     """Returns all the jobs that a user saved."""
 
     user_id = session.get('user_id')
-    print(user_id)
+
     valid_user = User.query.get(user_id)
-    print("VALIDDD USERRRR", valid_user) 
+
     if valid_user is None:
         flash("Please sign in first to save this job")
         return redirect("/login")
@@ -484,11 +484,7 @@ def show_saved_jobs():
 def show_events():
     """Calling Eventbrite API and showing a list of Eventbrite events happening based on User's average rating"""
 
-    # user_id = session.get('user_id')
-    # user = User.query.get(user_id)
     user_location = "San Francisco"
-    # print(user_location)
-    # This is for getting the user's specific location 
 
     payload = {'token' : 'W5TEINASBAG56UPMVLKI'}
     
@@ -502,7 +498,6 @@ def show_events():
     jobs_rated = user.ratings
     rating_list = []
     for rating in jobs_rated:
-        print(rating)
         rating_list.append(rating.rating)
     print(mean(rating_list))
     

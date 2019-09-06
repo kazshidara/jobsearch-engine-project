@@ -127,6 +127,15 @@ class Savings(db.Model):
 
 # Testing Flask and Database:
 
+def example_data():
+    """Creating sample data."""
+
+    User.query.delete()
+
+    u1 = User(fname='test', lname='user', email='test1@gmail.com', password='123')
+
+    db.session.add(u1)
+    db.session.commit()
 
  
 
@@ -134,11 +143,11 @@ class Savings(db.Model):
 #####################################################################
 # Helper functions
 
-def connect_to_db(app):
+def connect_to_db(app, db_name='mydatabase'):
     """Connect the database to our Flask app."""
 
     # Configure to use our PostgreSQL database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///mydatabase'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql:///{db_name}'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)
