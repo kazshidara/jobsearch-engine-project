@@ -1,11 +1,11 @@
 
 {% extends 'base.html' %}
-{% block title %}Job Listings{% endblock %}
+{% block title %}Saved jobs{% endblock %}
 {% block content %}
 
-<div>
-    {% for job in jobs %}
-        <h2>{{ job['company'] }} </h2>
+
+   {% for job in saved_jobs %}
+        <h2>{{ job['company'] }}</h6>
             <h3>Job Title: {{ job['title'] }}</h6>
             <p> Location: {{ job['location'] }}</p>
             <p> {{ (current_date - job.released_at).days }} days ago </p>
@@ -15,10 +15,6 @@
 
 
     {% endfor %}
-</div>
-
-
 
 {% endblock %}
-
 

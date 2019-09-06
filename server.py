@@ -415,35 +415,44 @@ def show_company_profile():
 def return_company_ratings():
     """Returns all the ratings that all users for a certain COMPANY made to display on a chart."""
     
+    job_id = int(request.args.get('job_id'))
     
-    # job_id = job.
-    print("JOB IDDDDDDD", job_id)
+    
     job = Job.query.get(job_id)
     print("JOB!!!!!", job)
 
-    company = db.session.query(Rating.rating).join(Job, Job.job_id == Rating.job_id).filter(Job.company == f'{job.company}').all()
-    print("COMPANYYYY", company)
+    company = db.session.query(Rating).join(Job, Job.job_id == Rating.job_id).filter(Job.company == f'{job.company}').all()
+    print("COMPANYYYY - Rating objects of all companies that have been rated", company)
 
-    ratings_list = []
-    
-    for each_tuple in company:
-        ratings_list.append(each_tuple[0])
-    print("RATING LISTTTT", ratings_list)
+    company_ratings = []
+    for each in company:
+        company_ratings.append(each.rating)
+    print(company_ratings)
 
+    company_dict = {0: 0,
+                    1: 0,
+                    2: 0,
+                    3: 0,
+                    4: 0}
 
-    # query for all rating objects of the specific company, using 
+    for each in company:
+        company_dict[each.rating] += 1
+
+    number_of_ratings = []
+
+    for key, value in company_dict.items():
+        number_of_ratings.append(value)
 
 
     data_dict = {
-                "data_points" : company_ratings,    #company ratings = list of 
-                "labels": x_axis,
+                # "data_points" : company_ratings,     
+                "labels": ["Received Application","Recruiter Responded","Phone Screen Administered",
+                            "Onsite Interview Administered","Job Offered"],
                 "datasets": [
                     {
-                        "data": [1,2,3,4,5],
-                        "backgroundColor": [
-                            "#99d8c9"],
-                        "hoverBackgroundColor": [
-                            "#FF6384" for color in x_axis]
+                        "data": number_of_ratings,
+                        "backgroundColor": ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                        
                     }]
             }
 
@@ -497,28 +506,6 @@ def show_saved_jobs():
     current_date = datetime.today()
 
     return render_template("saved.html", saved_jobs=saved_jobs, current_date=current_date)
-
-
-
-
-# @app.route("/user-avg-rating", methods=['GET'])
-# def show_user_rating_avg():
-#     """Shows average rating score for each user."""
-
-#     user_id = session.get('user_id')
-
-#     user = User.query.options(db.joinedload('ratings')).get(user_id)
-        
-
-#         #create a new list that has all the job objects that user has rated already
-#         #user.ratings = all the ratings that specific user has rated 
-#     jobs_rated = user.ratings
-#     rating_list = []
-#     for rating in jobs_rated:
-#         print(rating)
-#         rating_list.append(rating.rating)
-#     print(mean(rating_list))
-#     return mean(rating_list)
     
 
 
@@ -529,7 +516,7 @@ def show_events():
 
     # user_id = session.get('user_id')
     # user = User.query.get(user_id)
-    # user_location = "San Francisco"
+    user_location = "San Francisco"
     # print(user_location)
     # This is for getting the user's specific location 
 
@@ -554,7 +541,7 @@ def show_events():
     #networking and career events (Good for user average's that are between 0 and 1)
     if mean(rating_list) <= 1:
 
-        url = "https://www.eventbriteapi.com/v3/events/search/?q=software+engineering+networking&sort_by=date&location.address=San+Francisco&location.within=10mi&categories=101%2C102&subcategories=1004%2C2004%2C1010"
+        url = f"https://www.eventbriteapi.com/v3/events/search/?q=software+engineering+networking&sort_by=date&location.address={user_location}&location.within=10mi&categories=101%2C102&subcategories=1004%2C2004%2C1010"
     
     # class events (Good for user averages that are between 1 and 3 - brush up on technical knowledge)
     elif 1 < mean(rating_list) <= 3:
@@ -563,8 +550,8 @@ def show_events():
 
     #conferences and talk events (Good for user averages that are above 3)
     elif mean(rating_list) > 3:
-        
-        url = "https://www.eventbriteapi.com/v3/events/search/?q=software+engineering+conference&sort_by=date&location.address=San+Francisco&location.within=10mi&categories=101%2C102&subcategories=1001%2C2004%2C1009"
+
+        url = f"https://www.eventbriteapi.com/v3/events/search/?q=software+engineering+conference&sort_by=date&location.address={user_location}&location.within=10mi&categories=101%2C102&subcategories=1001%2C2004%2C1009"
     
     
     response = requests.get(url, params=payload)

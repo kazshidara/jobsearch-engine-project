@@ -34,7 +34,7 @@
 
             },
             tooltips: {
-              enabled:false,
+              enabled:true,
               mode: 'nearest',
               intersect: true,
               xPadding:20,
@@ -54,7 +54,17 @@
                       top: 50,
                       bottom: 50
                   }
-              }
+              },
+            scales: {
+              xAxes: [{
+                barPercentage: 1,
+                barThickness: 50,
+                minBarLength: 2,
+                gridLines: {
+                    offsetGridLines: true
+                    }
+                }]
+              },
       };
 
 
@@ -63,7 +73,7 @@
         // Make Bar Chart of ratings that users gave for a cetain company
         let myChart = $("#barChart").get(0).getContext("2d");
 
-        $.get("/company_ratings.json", function (data) {
+        $.get("/company_ratings.json?job_id={{ job.job_id }}", function (data) {
           let companyBarChart = new Chart(myChart, {
                                                   type: 'bar',
                                                   data: data,
