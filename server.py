@@ -202,6 +202,7 @@ def show_rating_form():
     return render_template("rating_form.html", job=job)
 
 
+
 #after user submits rating for a job listing, they 're brought to this route
 @app.route("/rating", methods=['POST'])
 def record_rating():
@@ -331,11 +332,7 @@ def return_company_average():
 
 
 
-
-
-
- 
-
+    
     
 @app.route("/user-ratings.json")
 def return_user_ratings():
@@ -403,7 +400,57 @@ def return_user_ratings():
 
 
 
+@app.route("/moreCompanyInfo", methods=['GET'])
+def show_company_profile():
+    """Renders company profile page."""
 
+    job_id = request.args.get('job_id') 
+    job = Job.query.get(job_id)
+
+    return render_template("company_profile.html", job=job)
+
+
+
+@app.route("/company_ratings.json")
+def return_company_ratings():
+    """Returns all the ratings that all users for a certain COMPANY made to display on a chart."""
+    
+    
+    # job_id = job.
+    print("JOB IDDDDDDD", job_id)
+    job = Job.query.get(job_id)
+    print("JOB!!!!!", job)
+
+    company = db.session.query(Rating.rating).join(Job, Job.job_id == Rating.job_id).filter(Job.company == f'{job.company}').all()
+    print("COMPANYYYY", company)
+
+    ratings_list = []
+    
+    for each_tuple in company:
+        ratings_list.append(each_tuple[0])
+    print("RATING LISTTTT", ratings_list)
+
+
+    # query for all rating objects of the specific company, using 
+
+
+    data_dict = {
+                "data_points" : company_ratings,    #company ratings = list of 
+                "labels": x_axis,
+                "datasets": [
+                    {
+                        "data": [1,2,3,4,5],
+                        "backgroundColor": [
+                            "#99d8c9"],
+                        "hoverBackgroundColor": [
+                            "#FF6384" for color in x_axis]
+                    }]
+            }
+
+  
+    return jsonify(data_dict)
+
+    
 @app.route("/saved", methods=['GET','POST'])
 def return_saved_jobs():
     """Returns all the jobs that a user saved."""
@@ -454,10 +501,40 @@ def show_saved_jobs():
 
 
 
-@app.route("/user-avg-rating", methods=['GET'])
-def show_user_rating_avg():
-    """Shows average rating score for each user."""
+# @app.route("/user-avg-rating", methods=['GET'])
+# def show_user_rating_avg():
+#     """Shows average rating score for each user."""
 
+#     user_id = session.get('user_id')
+
+#     user = User.query.options(db.joinedload('ratings')).get(user_id)
+        
+
+#         #create a new list that has all the job objects that user has rated already
+#         #user.ratings = all the ratings that specific user has rated 
+#     jobs_rated = user.ratings
+#     rating_list = []
+#     for rating in jobs_rated:
+#         print(rating)
+#         rating_list.append(rating.rating)
+#     print(mean(rating_list))
+#     return mean(rating_list)
+    
+
+
+
+@app.route("/user-events")
+def show_events():
+    """Calling Eventbrite API and showing a list of Eventbrite events happening based on User's average rating"""
+
+    # user_id = session.get('user_id')
+    # user = User.query.get(user_id)
+    # user_location = "San Francisco"
+    # print(user_location)
+    # This is for getting the user's specific location 
+
+    payload = {'token' : 'W5TEINASBAG56UPMVLKI'}
+    
     user_id = session.get('user_id')
 
     user = User.query.options(db.joinedload('ratings')).get(user_id)
@@ -471,32 +548,24 @@ def show_user_rating_avg():
         print(rating)
         rating_list.append(rating.rating)
     print(mean(rating_list))
-    return mean(rating_list)
+    
     
 
-
-
-@app.route("/user-events")
-def show_events():
-    """Calling Eventbrite API and showing a list of Eventbrite events happening"""
-
-    # user_id = session.get('user_id')
-    # user = User.query.get(user_id)
-    # user_location = "San Francisco"
-    # print(user_location)
-    # This is for getting the user's specific location 
-
-
-    payload = {'token' : 'W5TEINASBAG56UPMVLKI'}
-    
     #networking and career events (Good for user average's that are between 0 and 1)
-    # url = "https://www.eventbriteapi.com/v3/events/search/?q=software+engineering+networking&sort_by=date&location.address=San+Francisco&location.within=10mi&categories=101%2C102&subcategories=1004%2C2004%2C1010"
+    if mean(rating_list) <= 1:
 
-    #conferences and talk events (Good for user averages that are above 3)
-    # url = "https://www.eventbriteapi.com/v3/events/search/?q=software+engineering+conference&sort_by=date&location.address=San+Francisco&location.within=10mi&categories=101%2C102&subcategories=1001%2C2004%2C1009"
+        url = "https://www.eventbriteapi.com/v3/events/search/?q=software+engineering+networking&sort_by=date&location.address=San+Francisco&location.within=10mi&categories=101%2C102&subcategories=1004%2C2004%2C1010"
     
     # class events (Good for user averages that are between 1 and 3 - brush up on technical knowledge)
-    url = f"https://www.eventbriteapi.com/v3/events/search/?q=software+engineering+class&sort_by=date&location.address={user_location}&location.within=10mi&categories=101%2C102&subcategories=1001%2C2004%2C1004%2C1010"
+    elif 1 < mean(rating_list) <= 3:
+
+        url = f"https://www.eventbriteapi.com/v3/events/search/?q=software+engineering+class&sort_by=date&location.address={user_location}&location.within=10mi&categories=101%2C102&subcategories=1001%2C2004%2C1004%2C1010"
+
+    #conferences and talk events (Good for user averages that are above 3)
+    elif mean(rating_list) > 3:
+        
+        url = "https://www.eventbriteapi.com/v3/events/search/?q=software+engineering+conference&sort_by=date&location.address=San+Francisco&location.within=10mi&categories=101%2C102&subcategories=1001%2C2004%2C1009"
+    
     
     response = requests.get(url, params=payload)
 

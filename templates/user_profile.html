@@ -22,9 +22,9 @@
 
 
 
-<div class="melon-chart">
+<div class="user-progress-chart">
     <canvas id="lineChart"></canvas>
-    <div id="legend" class="chart-legend"></div>
+    <div id="legend1" class="chart-legend"></div>
 </div>
 
 <script>
@@ -40,7 +40,7 @@
 // };
 
 
-const options = {
+const optionsLine = {
 
       title:{
         display: true,
@@ -85,8 +85,40 @@ const options = {
                 top: 50,
                 bottom: 50
             }
+        },
+      scales: {
+            yAxes: [{
+                ticks: {
+                    // Display the 
+                    callback: function(value, index, values) {
+                        
+                        if (value == 0) {
+                          tick_label = "Applied to this Job"
+                        }
+                        else if (value == 1){
+                          tick_label = "Recruiter responded"
+                        }
+                        else if (value == 2){
+                          tick_label = "Phone Screen Interview"
+                        }
+                        else if (value == 3){
+                          tick_label = "Onsite Interview"
+                        }
+                        else if (value == 4){
+                          tick_label = "Received Job Offer"
+                        }
+                        else{
+                          tick_label = null
+                        }
+
+                        return tick_label;
+                    }
+                }
+            }]
         }
 };
+
+
 
 
     // Make Donut Chart of percent of different types of Melons
@@ -96,9 +128,9 @@ const options = {
       let userLineChart = new Chart(myChart, {
                                               type: 'line',
                                               data: data,
-                                              options: options
+                                              options: optionsLine
                                             });
-      $('#legend').html(userLineChart);
+      $('#legend1').html(userLineChart);
     });
 
 </script>
