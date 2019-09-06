@@ -1,42 +1,40 @@
 {% extends 'base.html' %}
 
 {% block title %}Job Profile{% endblock %}
+
 {% block content %}
 
-<br><br><br>
-    <div>
-        <a href="/saved?job_id={{job.job_id}}" method='POST' id="save-button"><button>Save this Job</button></a>
-    </div><img src="{{job['logo']}}" style="max-width:170px;max-height: auto;
+<br>
+<br>
+<br>
+
+<div>
+    <a href="/saved?job_id={{job.job_id}}" method='POST' id="save-button"><button>Save this Job</button></a>
+</div><img src="{{job['logo']}}" style="max-width:170px;max-height: auto;
                                             float: right; margin: 3px; padding: 3px;">
     
-    <div>
-        <h1>{{ job['company'] }}</h1>
-            <h2>Job Title: {{ job['title'] }}</h2>
-            <p> Location: {{ job['location']}}</p>
-            <p> ({{ num_days }} days ago) </p>
-           
-            <p> Type: {{ job_type }}</p>
+<div>
+    <h1>{{ job['company'] }}</h1>
+        <h2>Job Title: {{ job['title'] }}</h2>
+        <p> Location: {{ job['location']}}</p>
+        <p> ({{ num_days }} days ago) </p>
+        <p> Type: {{ job_type }}</p>
 
-            <p> {{ description|safe }}</p>
+        <p> {{ description|safe }}</p>
+        <p> How to Apply : {{ how_to_apply|safe }}</p>
+        <p> Company URL: {{ company_url }}</p>
+</div>
+    
+<br>
+<br>
+<br>
 
-            <p> How to Apply : {{ how_to_apply|safe }}</p>
-            <p> Company URL: {{ company_url }}</p>
-    </div>
-            <!-- call API again to extract other info -->
-
-
-    <br><br><br>
-
-    <!-- Display the average rating for the company and job listing here -->
-
-    <div>
-        <h1>RATING</h1>
-       
+<div>
         
-        <b>Average Rating for this Job:       </b><span id='avg_rating'></span>
-
-        <a href="/average?job_id={{job.job_id}}" method='GET' id="average-button"><button>Get Average Rating</button></a>
-
+    <h1>RATING</h1>
+    <b>Average Rating for this Job:       </b><span id='avg_rating'></span>
+    <a href="/average?job_id={{job.job_id}}" method='GET' id="average-button">
+        <button>Get Average Rating</button></a>
 
 
         <script type="text/javascript">
@@ -54,43 +52,38 @@
             
         </script>
 
-
-    </div>
+</div>
 
    
+<div>
     
-    <div>
-            <b>Have you applied to this job before?</b>   
-            <a href="/rating?job_id={{job.job_id}}" method='GET' id="rate-this-job-button"><button> Rate this Job </button></a>
-            <span id="space"></span>
+    <b>Have you applied to this job before?</b>   
+    <a href="/rating?job_id={{job.job_id}}" method='GET' id="rate-this-job-button"><button> Rate this Job </button></a>
+    <span id="space"></span>
 
-            <script type="text/javascript">
+        <script type="text/javascript">
 
-                document.getElementById('rate-this-job-button').onclick= function(evt) {
-                    evt.preventDefault();
-                    function showForm(response) {
-                        $('#modal-contents').html(response);
-                        $('#modal').show();
-                    }   
+            document.getElementById('rate-this-job-button').onclick= function(evt) {
+                evt.preventDefault();
+                function showForm(response) {
+                    $('#modal-contents').html(response);
+                    $('#modal').show();
+                }   
 
-
-
-                    $.get("/rating?job_id={{job.job_id}}", showForm);
-                }
+                $.get("/rating?job_id={{job.job_id}}", showForm);
+            }
                 
-                
-
-            </script>
+        </script>
         
+</div>
 
-    </div>
 
-
-    <div>
+<div>
             
-           <a href="/moreCompanyInfo?job_id={{job.job_id}}" method='GET' id="more-company-info-button" ><button>More Info on this Company</button></a>
+    <a href="/moreCompanyInfo?job_id={{job.job_id}}" method='GET' id="more-company-info-button">
+        <button>More Info on this Company</button></a>
 
-    </div>
+</div>
 
 {% endblock %}
 

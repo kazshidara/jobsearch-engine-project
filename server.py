@@ -15,8 +15,6 @@ import json
 from functions import days_from_date
 
 
-
-
 app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
@@ -25,17 +23,23 @@ app.secret_key = "YeahYouWishYouKnew"
 app.jinja_env.undefined = StrictUndefined
 
 
+################################################################################
+################################################################################
+
+
 @app.route('/')
 def index():
     """Homepage that renders the search page"""
 
     return render_template("index.html")
 
+
 @app.route('/welcome')
 def welcome():
     """Page where user can sign in or sign up"""
 
     return render_template("welcome_page.html")
+
 
 @app.route('/register')
 def register_form():
@@ -56,10 +60,15 @@ def register_process():
     
     email_check = User.query.filter_by(email=email).first()
     password_check = User.query.filter_by(password=password).first()
+
     if email_check:
+        
         flash("The email you entered is already registered, please sign in or enter a different email")
+    
     elif password_check:
+        
         flash("Please register with a different password")
+    
     else:
         new_user = User(fname=fname, lname=lname, email=email, password=password)
 
@@ -67,6 +76,7 @@ def register_process():
         db.session.commit()
 
         flash(f"User {email} added.")
+
     return redirect("/login")
 
 
@@ -84,20 +94,16 @@ def login_process():
     # Get form variables
     email = request.form["email"]
     password = request.form["password"]
-
     user = User.query.filter_by(email=email).first() #querying into db for email
 
     if not user:
         flash("Sorry, we don't recognize your email")
         return redirect("/login")
-
     if user.password != password:
         flash("Incorrect password")
         return redirect("/login")
 
     session["user_id"] = user.user_id      #save the user_id in session dict.
-
-
     flash("Logged in")
     return redirect("/")
 
@@ -108,7 +114,6 @@ def logout():
     
     session.clear()  
     flash("Successfully Logged Out")
-
     return redirect("/welcome")
 
 
@@ -121,12 +126,10 @@ def job_list_location():
     title = request.args.get("job title")
     current_date = datetime.today()
     
-
     jobs_query = Job.query        #query for all jobs initially 
 
     if location:                    #if location is specified, filter for those jobs
         updated_location = f"%{location}%"
-
         jobs_query = jobs_query.filter(Job.location.like(updated_location))
 
     if title:                       #if title is specified, filter for those jobs
@@ -139,13 +142,7 @@ def job_list_location():
         flash("Sorry, we could not find any jobs that matched your specification")
         return redirect("/")
 
-    
-
     return render_template("job_listings.html", jobs=jobs, current_date=current_date)
-
-
-
-
 
 
 @app.route("/job_profile", methods=['GET'])
@@ -170,24 +167,19 @@ def job_profile():
 
     num_days = days_from_date(job.released_at)
 
-
-
     return render_template('job.html', job=job, data=data, job_type=job_type, 
                             company_url=company_url, description=description, 
                             how_to_apply=how_to_apply,
                             num_days=num_days)
 
 
-
 @app.route("/user_profile", methods=['GET'])
 def show_user_profile():
     """Show profile of user that's currently logged in."""
 
-
     user_id = session.get('user_id')
     user = User.query.get(user_id)
- 
-    
+   
     return render_template('user_profile.html', user=user)
 
 
@@ -202,7 +194,6 @@ def show_rating_form():
     return render_template("rating_form.html", job=job)
 
 
-
 #after user submits rating for a job listing, they 're brought to this route
 @app.route("/rating", methods=['POST'])
 def record_rating():
@@ -211,8 +202,6 @@ def record_rating():
     #getting job id from the form user submits 
     job_id = request.args.get('job_id')
       
-
-
     # first confirm if they are logged in --> user_id in session 
     user_id = session.get('user_id')
     
@@ -221,7 +210,6 @@ def record_rating():
         return redirect("/login")
 
     else:
-        
         # what the user rated the job  
         score_value = request.form['rating_val']
         print("SCOREEE VALUEEEE", score_value)
@@ -238,8 +226,7 @@ def record_rating():
         if job in jobs_rated:
             
             return "You've already rated this job"
-
-            
+        
         else:
             # if user hasn't rated the job listing yet, allow them to submit a rating
             # -->don't need to pass in user_id or job_id b/c of unique constraints
@@ -250,8 +237,6 @@ def record_rating():
 
             return "Thank you, your rating has been recorded!"
             
-    
- 
 
 @app.route("/average", methods=['GET'])
 def return_average_rating():
@@ -278,21 +263,16 @@ def return_average_rating():
         elif 3 <= average < 4:
             response = "On average, applicants who applied to this job got through to the onsite interview"
         else:
-            response = "On average, applicants who applied to this job received a job offer!"
-        
+            response = "On average, applicants who applied to this job received a job offer!"       
         return response
     else:
         return "No ratings on this job posting yet!"
-
-
-    
 
 
 @app.route("/company_avg", methods=['GET'])
 def return_company_average():
     """Returns the average rating for a Company via multiple job postings and ratings."""
     
-
     job_id = request.args.get('job_id')
     job = Job.query.get(job_id)
 
@@ -331,9 +311,6 @@ def return_company_average():
         return response
 
 
-
-    
-    
 @app.route("/user-ratings.json")
 def return_user_ratings():
     """Returns all the ratings that a user made to display on a chart."""
@@ -345,13 +322,13 @@ def return_user_ratings():
     job_object = db.session.query(Job, Rating).join(Rating, Job.job_id == Rating.job_id).filter(Rating.user_id==f'{user_id}').all()
     print("ALL JOB OBJECTS FOR USERRRRRR", job_object)
     
-
     # Each point in the graph will represent:
     #  company name
     #  job title
     #  location
 
     user_ratings = []
+
     for job in job_object:    
         print("Job in job list: ", job)
 
@@ -361,6 +338,7 @@ def return_user_ratings():
             "location" : job[0].location,
             "rating" : job[1].rating
             })
+
     print("USER RATINGS:", user_ratings)
 
 
@@ -371,11 +349,9 @@ def return_user_ratings():
     
     ratings_list = []
     
-
     for rating in jobs_rated:
         ratings_list.append(rating.rating)
     
-
     # # x_axis has the number of ratings the user has made, counting the number using indices
     x_axis = []
     for i,rating in enumerate(user_ratings):
@@ -394,10 +370,8 @@ def return_user_ratings():
                             "#FF6384" for color in x_axis]
                     }]
             }
-
-  
+ 
     return jsonify(data_dict)   #data_dict is what gets passed into JS function(data)
-
 
 
 @app.route("/moreCompanyInfo", methods=['GET'])
@@ -456,7 +430,6 @@ def return_company_ratings():
                     }]
             }
 
-  
     return jsonify(data_dict)
 
     
@@ -495,7 +468,6 @@ def return_saved_jobs():
     return redirect(f"/job_profile?job_id={job.job_id}")
 
 
-
 @app.route("/show-saved", methods=['GET'])
 def show_saved_jobs():
     """Shows a list of all jobs saved by user."""
@@ -507,8 +479,6 @@ def show_saved_jobs():
 
     return render_template("saved.html", saved_jobs=saved_jobs, current_date=current_date)
     
-
-
 
 @app.route("/user-events")
 def show_events():
@@ -536,8 +506,6 @@ def show_events():
         rating_list.append(rating.rating)
     print(mean(rating_list))
     
-    
-
     #networking and career events (Good for user average's that are between 0 and 1)
     if mean(rating_list) <= 1:
 
@@ -559,12 +527,12 @@ def show_events():
     events = response.json()
 
     new_dict = {}
+
     for event in events['events']:
 
         new_dict[event['organization_id']] = event['name']['text'], event['summary'],event['url'], event['logo']['url']
     
     return render_template("recommended_events.html", new_dict=new_dict)
-
 
 
 

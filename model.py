@@ -123,9 +123,11 @@ class Savings(db.Model):
 
  
 
+#####################################################################
+
+# Testing Flask and Database:
 
 
-   
  
 
 
@@ -140,6 +142,7 @@ def connect_to_db(app):
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)
+
 
 
 if __name__ == "__main__":

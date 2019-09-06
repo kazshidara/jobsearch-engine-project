@@ -2,27 +2,23 @@
 
 {% block title %}Company Profile{% endblock %}
 
-
-
 {% block content %}
 
 
 <div>
-  
+
   <h2> {{job.company}} </h2><img src="{{job.logo}}" style="max-width:180px;max-height: auto;
                                             float: left; padding: 3px;">
-
 </div>
 
-
-
 <div class="">
-    <canvas id="barChart"></canvas>
-    <div id="legend2"></div>
     
-
-
-  <script>
+    <canvas id="barChart"></canvas>
+    <div id="legend2">
+    
+</div>
+    
+<script>
 
       const optionsBar = {
 
@@ -68,8 +64,6 @@
       };
 
 
-
-
         // Make Bar Chart of ratings that users gave for a cetain company
         let myChart = $("#barChart").get(0).getContext("2d");
 
@@ -84,19 +78,17 @@
 
     </script>
 
-  </div>
+</div>
 
 <br>
 <br>
 <br>
-
-
 
 <div>
             
-          <b>Company Average Rating:       </b><span id='company_avg_rating'></span> 
+  <b>Company Average Rating:       </b><span id='company_avg_rating'></span> 
 
-          <a href="/company_avg?job_id={{job.job_id}}" method='GET' id="company-avg-button" ><button>Get Company Average</button></a>
+  <a href="/company_avg?job_id={{job.job_id}}" method='GET' id="company-avg-button" ><button>Get Company Average</button></a>
 
    
       <script type="text/javascript">
@@ -111,19 +103,10 @@
 
                 $.get('/company_avg?job_id={{job.job_id}}', getCompanyAvg);
             }
-            
+
       </script>
 
-
 </div>
-
-
-
-
-
-
-
-
 
 
 {% endblock %}

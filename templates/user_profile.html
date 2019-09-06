@@ -2,8 +2,6 @@
 
 {% block title %}User Profile{% endblock %}
 
-
-
 {% block content %}
 
 <div>
@@ -13,13 +11,8 @@
 
 
 <div>
-  <h3>Saved Jobs</h3>
   <a href="/show-saved" method="GET" id="show-saved-button"><button>Show my saved jobs</button></a>
-
-
 </div>
-
-
 
 
 <div class="user-progress-chart">
@@ -28,17 +21,6 @@
 </div>
 
 <script>
-
-// function printObject(object, current_output) {
-//   for (var child in object) {
-//     if (child instanceof Object) {
-//       return current_output + printObject(child);
-//     } else {
-//       return current_output + " " + child;
-//     }
-//   }
-// };
-
 
 const optionsLine = {
 
@@ -60,9 +42,8 @@ const optionsLine = {
             title: function(tooltipItem, data) {
                   let labelTitle = data["data_points"][tooltipItem[0]['index']]["title"];
                   
-                  //let labelTitle = tooltipItem[0]['index'] == null ? "NULL " : tooltipItem[0]['index'];
                   return labelTitle;
-            },
+                },
             label: function(tooltipItem, data) {
                   let labelCompany = data["data_points"][tooltipItem['index']]["company"];
 
@@ -72,21 +53,21 @@ const optionsLine = {
                   let labelLocation = data["data_points"][tooltipItem['index']]["location"];
 
                   return labelLocation;
-            }
-          }
-        },
-      legend: {
-        display: false
-      },
-      layout: {
-            padding: {
-                left: 70,
-                right: 70,
-                top: 50,
-                bottom: 50
-            }
-        },
-      scales: {
+                }
+              }
+            },
+        legend: {
+            display: false
+            },
+            layout: {
+                padding: {
+                    left: 70,
+                    right: 70,
+                    top: 50,
+                    bottom: 50
+                  }
+            },
+        scales: {
             yAxes: [{
                 ticks: {
                     // Display the 
@@ -107,19 +88,15 @@ const optionsLine = {
                         else if (value == 4){
                           tick_label = "Received Job Offer"
                         }
-                        else{
+                        else {
                           tick_label = null
                         }
-
                         return tick_label;
                     }
-                }
-            }]
-        }
-};
-
-
-
+                  }
+              }]
+          }
+    };
 
     // Make Donut Chart of percent of different types of Melons
     let myChart = $("#lineChart").get(0).getContext("2d");
@@ -135,16 +112,17 @@ const optionsLine = {
 
 </script>
 
-
-
-
-
-
-
-
 {% endblock %}
 
-
-
+<!-- Dat implemented test below to check JS code -->
+<!-- function printObject(object, current_output) {
+//   for (var child in object) {
+//     if (child instanceof Object) {
+//       return current_output + printObject(child);
+//     } else {
+//       return current_output + " " + child;
+//     }
+//   }
+// }; -->
 
 

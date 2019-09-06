@@ -1,16 +1,15 @@
 {% extends 'base.html' %}
+
 {% block title %}Search Page{% endblock %}
-
-
 
 {% block content %}
 
+    <h3>Enter a Job Title, Location or Both:</h3>
     <form action="/jobs_search">
         <input type="text" name="job title" placeholder="Search by Job Title">
         <input type="text" name="job location" placeholder="Search by Location">
         <input type="submit">     
     </form>    
-
 
 {% endblock %}
     

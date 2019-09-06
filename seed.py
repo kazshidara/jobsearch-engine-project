@@ -40,7 +40,6 @@ def load_users():
 def load_jobs():
     """Load jobs into database."""
 
-
     print("Jobs")
     # Delete all rows in table, so if we need to run this a second time,
     # we won't be trying to add duplicate jobs
@@ -68,40 +67,33 @@ def load_jobs():
     db.session.commit()
     
 
-#call api function to load data 
-
 def load_ratings():
-    """Load ratings into database."""
+    """Load ratings into database from txt file."""
 
-    # make a separate text file with previously rated companies and job postings 
-    # to showcase average functionality 
-
-    # print("Ratings")
+    print("Ratings")
 
     # # Delete all rows in table, so if we need to run this a second time,
     # # we won't be trying to add duplicate users
-    # Rating.query.delete()
+    Rating.query.delete()
 
     # # Read u.rating file and insert data
-    # for row in open("seed_data/u.rating"):
-    #     row = row.rstrip()
-    #     rating_id, job_id, user_id, rating = row.split("|")
+    for row in open("seed_data/u.rating"):
+        row = row.rstrip()
+        rating_id, job_id, user_id, rating = row.split("|")
 
-    #     rating = Rating(rating_id=rating_id,
-    #                     job_id=job_id,
-    #                     user_id=user_id,
-    #                     rating=rating)
-    #     print(rating)
+        rating = Rating(rating_id=rating_id,
+                        job_id=job_id,
+                        user_id=user_id,
+                        rating=rating)
+        print(rating)
 
 
 
     #     # We need to add to the session or it won't ever be stored
-    #     db.session.add(rating)
+        db.session.add(rating)
 
     # # Once we're done, we should commit our work
-    # db.session.commit()
-
-
+    db.session.commit()
 
 
 def set_val_user_id():
@@ -119,8 +111,6 @@ def set_val_user_id():
     db.session.commit()
 
 
-
-# def create_test_user() # put sample code of test users here -- how it backups ('test' as username for login)
 
 if __name__ == "__main__":
     connect_to_db(app)

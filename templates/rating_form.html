@@ -2,8 +2,6 @@
 
 <h3>Rating form for {{ job['title'] }} at {{ job['company'] }}</h3>
 
-    
-
     <div>
         <form method="POST" action='/rating'>
             <input type="hidden" name="job_id" value="{{ job.job_id }}">
@@ -46,9 +44,9 @@
                 modal.style.display = "none";
               }
             }
-            
-            
+               
         </script>
+        
     </div>
     
 

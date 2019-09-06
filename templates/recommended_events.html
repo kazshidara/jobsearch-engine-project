@@ -12,21 +12,19 @@
         
         {% for event_key, event_value in new_dict.items() %}
         
-
           <li><h3> {{ new_dict[event_key][0] }} </h3></li>
          
           <img src="{{new_dict[event_key][3]}}">
           <p><b> About the event:</b> {{new_dict[event_key][1]}}.....</p><br>
             <b>More on this event can be found here:</b><a href="{{ new_dict[event_key][2]}}">{{new_dict[event_key][2]}} </a>
+            
             <br> 
             <br>
             <br>
         
-        
         {% endfor %}
 
       </ul>
-
 
   </div>
 
