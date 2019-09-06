@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block title %}Company Profile{% endblock %}
+
+
+
+{% block content %}
+
+
+<div>
+  
+  <h2> {{job.company}} </h2><img src="{{job.logo}}" style="max-width:180px;max-height: auto;
+                                            float: left; padding: 3px;">
+
+</div>
+
+
+
+<div class="">
+    <canvas id="barChart"></canvas>
+    <div id="legend2"></div>
+    
+
+
+  <script>
+
+      const optionsBar = {
+
+            title:{
+              display: true,
+              text: "Visualizing Company Inclusivity Efforts",
+              fontSize: 25,
+              padding: 20,
+
+            },
+            tooltips: {
+              enabled:false,
+              mode: 'nearest',
+              intersect: true,
+              xPadding:20,
+              yPadding:20,
+              position: 'average',
+              callbacks: {
+                
+                }
+              },
+            legend: {
+              display: false
+            },
+            layout: {
+                  padding: {
+                      left: 70,
+                      right: 70,
+                      top: 50,
+                      bottom: 50
+                  }
+              }
+      };
+
+
+
+
+        // Make Bar Chart of ratings that users gave for a cetain company
+        let myChart = $("#barChart").get(0).getContext("2d");
+
+        $.get("/company_ratings.json", function (data) {
+          let companyBarChart = new Chart(myChart, {
+                                                  type: 'bar',
+                                                  data: data,
+                                                  options: optionsBar
+                                                });
+          $('#legend2').html(companyBarChart);
+        });
+
+    </script>
+
+  </div>
+
+<br>
+<br>
+<br>
+
+
+
+<div>
+            
+          <b>Company Average Rating:       </b><span id='company_avg_rating'></span> 
+
+          <a href="/company_avg?job_id={{job.job_id}}" method='GET' id="company-avg-button" ><button>Get Company Average</button></a>
+
+   
+      <script type="text/javascript">
+            
+            document.getElementById('company-avg-button').onclick = function(evt) {
+    
+                evt.preventDefault();
+
+                function getCompanyAvg(response) {
+                    $('#company_avg_rating').html(response);
+                }
+
+                $.get('/company_avg?job_id={{job.job_id}}', getCompanyAvg);
+            }
+            
+      </script>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
