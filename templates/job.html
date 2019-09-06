@@ -58,31 +58,8 @@
     </div>
 
    
-
+    
     <div>
-            
-          <b>Company Average Rating:       </b><span id='company_avg_rating'></span> 
-
-          <a href="/company_avg?job_id={{job.job_id}}" method='GET' id="company-avg-button" ><button>Get Company Average</button></a>
-
-   
-        <script type="text/javascript">
-            
-            document.getElementById('company-avg-button').onclick = function(evt) {
-    
-                evt.preventDefault();
-
-                function getCompanyAvg(response) {
-                    $('#company_avg_rating').html(response);
-                }
-
-                $.get('/company_avg?job_id={{job.job_id}}', getCompanyAvg);
-            }
-            
-        </script>
-    </div>
-    
-     <div>
             <b>Have you applied to this job before?</b>   
             <a href="/rating?job_id={{job.job_id}}" method='GET' id="rate-this-job-button"><button> Rate this Job </button></a>
             <span id="space"></span>
@@ -105,6 +82,13 @@
 
             </script>
         
+
+    </div>
+
+
+    <div>
+            
+           <a href="/moreCompanyInfo?job_id={{job.job_id}}" method='GET' id="more-company-info-button" ><button>More Info on this Company</button></a>
 
     </div>
 
