@@ -1,8 +1,12 @@
-body {
-    background-color: #eee;
+* {
+  box-sizing: border-box;
 }
 
-
+body, html {
+    height: 100%;
+    background-color: transparent;
+}
+/* Modal styling for rating form */
 #modal {
     position: fixed;
     top: 0;
@@ -19,3 +23,64 @@ body {
     padding: 2em;
     background-color: rgba(170,20,0, 1)
 }
+
+.search-page {
+  /* The background image used search-page  */
+  background-image: url("/static/images/search_page.jpg");
+
+  /* Control the height of the image */
+  min-height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  display: 
+}
+
+/* Add styles to the search form container */
+.container {
+  position: absolute;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  margin: 10em;
+  min-width: %;
+  padding: 5%;
+  background-color: transparent;
+  bottom: 30%;
+
+}
+
+.input {
+  background-color: white;
+  background-image: url('/static/images/search_icon.png');
+  background-position: 5px 5px; 
+  background-repeat: no-repeat;
+  padding-left: 3%;
+  width: 25em;
+  padding-top: 0.5%;
+  padding-bottom: 0.5%;
+}
+/* Set a style for the submit button */
+.btn {
+  background-color: gray;
+  color: white;
+  padding: .70%;
+  border: none;
+  cursor: pointer;
+  width: 8%;
+  opacity: 0.7;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.job .location {
+    width: 100%;
+}
+
+.options {
+    background-color: transparent;
+}
+

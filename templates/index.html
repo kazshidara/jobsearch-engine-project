@@ -4,13 +4,14 @@
 
 {% block content %}
 
-    <h3>Enter a Job Title, Location or Both:</h3>
-    <form action="/jobs_search">
-        <input type="text" name="job title" placeholder="Search by Job Title">
-        <input type="text" name="job location" placeholder="Search by Location">
-        <input type="submit">     
+    
+<div class="search-page">
+    <form action="/jobs_search" class="container">
+        <input type="text" name="job title" placeholder="Search Jobs" class="input">
+        <input type="text" name="job location" placeholder="Search Location" class="input">
+        <button type="submit" class="btn">Search</button>     
     </form>    
+</div>
 
 {% endblock %}
     
-   

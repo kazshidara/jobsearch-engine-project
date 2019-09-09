@@ -1,16 +1,26 @@
 <!doctype html>
 <html>
 <head>
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="/static/style_sheet.css">
   
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/style_sheet.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
   
     {% if session %}   
+      
+      <div class="header" id="myHeader">
         <a href="/logout"><button>Log Out</button></a>
         <a href="/user_profile"><button>Profile</button></a>
         <a href="/"><button>Search for a Job</button></a>
+      </div>
+      
     {% else %}
+      <div class="header" id="myHeader">
         <a href="/login"><button>Sign In</button></a>
+      </div>
     {% endif %}
 
     {% with messages = get_flashed_messages() %}
@@ -22,7 +32,7 @@
       {% endif %}
     {% endwith %}
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
+  
 
 </head>
 
@@ -38,7 +48,9 @@
 
 
   {% block content %} Put Content HERE! {% endblock %}
-
-
+  
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 </html>
