@@ -85,7 +85,7 @@ body, html {
 .login-form-title {
     display: relative;
     text-align: center;
-    color: gray;
+    color: white;
     font-family: 'Montserrat', sans-serif;
     font-size: 3em;
 }
@@ -100,9 +100,11 @@ body, html {
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
-  filter: blur(7px);
-  -webkit-filter: blur(7px);
   color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 }
 
 /* Add styles to the search form container */
@@ -113,9 +115,7 @@ body, html {
   margin: 10em;
   min-width: 40%;
   padding: 5%;
-  background-color: red;
-  opacity: 0.5;
-
+  background-color: #FF5A5F;
 }
 
 .login-text-email .login-text-password {

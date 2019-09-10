@@ -9,7 +9,21 @@
   <link rel="stylesheet" type="text/css" href="/static/style_sheet.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
   
-    {% if session %}   
+  <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/static/images/search_icon"></a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+          
+          <li><a href="#"><span class="sign_in"></span> Sign In</a></li>
+          <li><a href="#"><span class="log_in"></span> Logout</a></li>
+
+        </ul>
+      </div>
+  </nav>
+
+  <!--   {% if session %}   
       
       <div class="header" id="myHeader">
         <a href="/logout"><button>Log Out</button></a>
@@ -21,7 +35,7 @@
       <div class="header" id="myHeader">
         <a href="/login"><button>Sign In</button></a>
       </div>
-    {% endif %}
+    {% endif %} -->
 
     {% with messages = get_flashed_messages() %}
       {% if messages %}
@@ -35,9 +49,6 @@
   
 
 </head>
-
-<br>
-<br>
 
 <body>
 
