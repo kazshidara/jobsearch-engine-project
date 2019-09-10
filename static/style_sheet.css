@@ -82,11 +82,12 @@ body, html {
 
 /*-------------------------LOGIN PAGE ("/") STYLING------------------------- */
 
-.login-heading {
-    color: white;
-    position: relative;
+.login-form-title {
+    display: relative;
     text-align: center;
-
+    color: gray;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3em;
 }
 
 .login-page {
@@ -99,44 +100,42 @@ body, html {
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
-  filter: blur(8px);
-  -webkit-filter: blur(8px);
+  filter: blur(7px);
+  -webkit-filter: blur(7px);
   color: white;
 }
 
 /* Add styles to the search form container */
 .login-form {
-  position: absolute;
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
+  position: relative;
+  display: inline-block;
+  text-align: center;
   margin: 10em;
-  min-width: %;
+  min-width: 40%;
   padding: 5%;
-  background-color: white;
-  opacity: 0.8;
-  bottom: 30%;
+  background-color: red;
+  opacity: 0.5;
 
 }
 
-.login-text {
+.login-text-email .login-text-password {
   background-color: white;
   background-image: url('/static/images/search_icon.png');
   background-position: 5px 5px; 
   background-repeat: no-repeat;
   padding-left: 3%;
-  width: 25em;
-  padding-top: 0.5%;
-  padding-bottom: 0.5%;
+  width: 70%;
+  padding-top: 0.65%;
+  padding-bottom: 0.65%;
 }
 /* Set a style for the submit button */
 .login-btn {
   background-color: gray;
   color: white;
-  padding: .70%;
+  padding: 5px;
   border: none;
   cursor: pointer;
-  width: 8%;
+  width: 30%;
   opacity: 0.8;
 }
 
