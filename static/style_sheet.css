@@ -24,6 +24,7 @@ body, html {
     background-color: rgba(170,20,0, 1)
 }
 
+/*-------------------------SEARCH PAGE ("/") STYLING------------------------- */
 .search-page {
   /* The background image used search-page  */
   background-image: url("/static/images/search_page.jpg");
@@ -34,7 +35,6 @@ body, html {
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
-  display: 
 }
 
 /* Add styles to the search form container */
@@ -80,7 +80,67 @@ body, html {
     width: 100%;
 }
 
-.options {
-    background-color: transparent;
+/*-------------------------LOGIN PAGE ("/") STYLING------------------------- */
+
+.login-heading {
+    color: white;
+    position: relative;
+    text-align: center;
+
+}
+
+.login-page {
+  /* The background image used search-page  */
+  background-image: url("/static/images/login_page.jpg");
+
+  /* Control the height of the image */
+  min-height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  filter: blur(8px);
+  -webkit-filter: blur(8px);
+  color: white;
+}
+
+/* Add styles to the search form container */
+.login-form {
+  position: absolute;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  margin: 10em;
+  min-width: %;
+  padding: 5%;
+  background-color: white;
+  opacity: 0.8;
+  bottom: 30%;
+
+}
+
+.login-text {
+  background-color: white;
+  background-image: url('/static/images/search_icon.png');
+  background-position: 5px 5px; 
+  background-repeat: no-repeat;
+  padding-left: 3%;
+  width: 25em;
+  padding-top: 0.5%;
+  padding-bottom: 0.5%;
+}
+/* Set a style for the submit button */
+.login-btn {
+  background-color: gray;
+  color: white;
+  padding: .70%;
+  border: none;
+  cursor: pointer;
+  width: 8%;
+  opacity: 0.8;
+}
+
+.login-btn:hover {
+  opacity: 1;
 }
 

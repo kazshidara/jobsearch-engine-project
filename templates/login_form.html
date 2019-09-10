@@ -4,15 +4,15 @@
 
 {% block content %}
 
-<div class="login">
-    <h3> Welcome back </h3>
-    <br>
-    <br>
-    <form action="/login" method="POST" class="login-form">
-        <input type="text" name="email" placeholder="Enter Email" class="login-text">
-        <input type="text" name="password" placeholder="Password" class="login-text">
-        <input type="submit">
-    </form>
-</div>    
+
+<div class="login-heading"><h4>Welcome Back</h4></div>
+<div class="login-page"></div>
+
+<form action="/login" method="POST" class="login-form">
+    <input type="text" name="email" placeholder="Enter Email" class="login-text">
+    <input type="text" name="password" placeholder="Password" class="login-text">
+    <button type="submit" class="login-btn">Login</button>   
+</form>
+  
 
 {% endblock %}

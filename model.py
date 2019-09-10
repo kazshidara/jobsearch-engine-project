@@ -128,7 +128,7 @@ class Savings(db.Model):
 # Testing Flask and Database:
 
 def example_data():
-    """Creating sample data."""
+    """Creating sample data into a sample databases."""
 
     User.query.delete()
 

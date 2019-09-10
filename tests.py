@@ -57,7 +57,7 @@ class TestFlaskRoutes(unittest.TestCase):
 
     # TEST 4 - testing API Calls 
 
-    # TEST 5 - testing Flask and Database 
+
 
 
 
