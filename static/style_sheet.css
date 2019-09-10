@@ -80,7 +80,7 @@ body, html {
     width: 100%;
 }
 
-/*-------------------------LOGIN PAGE ("/") STYLING------------------------- */
+/*-------------------------LOGIN PAGE ("/login") STYLING------------------------- */
 
 .login-form-title {
     display: relative;
@@ -121,10 +121,10 @@ body, html {
 .login-text-email .login-text-password {
   background-color: white;
   background-image: url('/static/images/search_icon.png');
-  background-position: 5px 5px; 
+  background-position: 50% 50%; 
   background-repeat: no-repeat;
-  padding-left: 3%;
-  width: 70%;
+  padding-left: 2%;
+  min-width: 70%;
   padding-top: 0.65%;
   padding-bottom: 0.65%;
 }
@@ -136,10 +136,42 @@ body, html {
   border: none;
   cursor: pointer;
   width: 30%;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .login-btn:hover {
   opacity: 1;
 }
+
+
+/*-------------------------WELCOME PAGE ("/welcome") STYLING------------------------- */
+
+
+.welcome-page {
+    background-image: url("/static/images/welcome_page.jpg");
+    min-height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    /*filter: blur(7px);
+    -webkit-filter: blur(7px);*/
+    color: grey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.register {
+
+    background-color: white;
+    padding: 5%;
+    width: 35%;
+    position: relative;
+    text-align: left;
+    display: block;
+
+}
+
+
 
