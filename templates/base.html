@@ -7,35 +7,25 @@
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="/static/style_sheet.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
   
-  <nav class="navbar navbar-inverse">
+  
+  <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="/static/images/search_icon"></a>
+          <a class="navbar-brand" href="/"><img src="">Job Search Engine</a>
         </div>
-        <ul class="nav navbar-nav navbar-right">
-          
-          <li><a href="#"><span class="sign_in"></span> Sign In</a></li>
-          <li><a href="#"><span class="log_in"></span> Logout</a></li>
-
-        </ul>
+          <ul class="nav navbar-nav navbar-right">
+            {% if session %}
+              <li><a href="/user_profile"><span class="profile-link"> Profile</span> </a></li>
+              <li><a href="/"><span class="search-link">Search for Job </span></a></li>
+              <li><a href="/logout"><span class="logout-link"> Logout</span></a></li>
+            {% else %}
+              <li><a href="/login"><span class="sign-in-link">Sign In</span></a></li>
+              <li><a href="/welcome"><span class="register-link">Sign Up</span></a></li>
+            {% endif %}
+          </ul>
       </div>
   </nav>
-
-  <!--   {% if session %}   
-      
-      <div class="header" id="myHeader">
-        <a href="/logout"><button>Log Out</button></a>
-        <a href="/user_profile"><button>Profile</button></a>
-        <a href="/"><button>Search for a Job</button></a>
-      </div>
-      
-    {% else %}
-      <div class="header" id="myHeader">
-        <a href="/login"><button>Sign In</button></a>
-      </div>
-    {% endif %} -->
 
     {% with messages = get_flashed_messages() %}
       {% if messages %}
@@ -45,8 +35,6 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
-
-  
 
 </head>
 
@@ -62,6 +50,6 @@
   
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
 </body>
 </html>
