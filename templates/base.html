@@ -7,38 +7,39 @@
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="/static/style_sheet.css">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
   
+</head>
+<body>
   
   <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="/"><img src="">Job Search Engine</a>
-        </div>
-          <ul class="nav navbar-nav navbar-right">
-            {% if session %}
-              <li><a href="/user_profile"><span class="profile-link"> Profile</span> </a></li>
-              <li><a href="/"><span class="search-link">Search for Job </span></a></li>
-              <li><a href="/logout"><span class="logout-link"> Logout</span></a></li>
-            {% else %}
-              <li><a href="/login"><span class="sign-in-link">Sign In</span></a></li>
-              <li><a href="/welcome"><span class="register-link">Sign Up</span></a></li>
-            {% endif %}
-          </ul>
-      </div>
-  </nav>
-
-    {% with messages = get_flashed_messages() %}
+          <a class="navbar-brand" href="/" style="color: white;">Job Search Engine</a>
+           {% with messages = get_flashed_messages() %}
       {% if messages %}
         <class=flashes>
         {% for message in messages %}
           {{ message }}
         {% endfor %}
-      {% endif %}
-    {% endwith %}
+        {% endif %}
+        {% endwith %}
 
-</head>
-
-<body>
+        </div>
+          <ul class="nav navbar-nav navbar-right">
+            {% if session %}
+              <li><a href="/user_profile"><span class="link"> Profile</span> </a></li>
+              <li><a href="/"><span class="link">Search for Job </span></a></li>
+              <li><a href="/logout"><span class="link"> Logout</span></a></li>
+            {% else %}
+              <li><a href="/login"><span class="link">Sign In</span></a></li>
+              <li><a href="/welcome"><span class="link">Sign Up</span></a></li>
+            {% endif %}
+          </ul>
+      </div>
+  </nav>
 
   <div id="modal" style="display: none;">      <!--takes over entire page = container -->
     <div id="modal-contents">               <!--  shows the form within the container   -->
@@ -48,8 +49,6 @@
 
   {% block content %} Put Content HERE! {% endblock %}
   
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
+ 
 </body>
 </html>

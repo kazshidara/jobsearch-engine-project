@@ -4,18 +4,12 @@
 
 {% block content %}
 
-<br>
-<br>
-<br>
-
-<div>
-    <a href="/saved?job_id={{job.job_id}}" method='POST' id="save-button"><button>Save this Job</button></a>
-</div><img src="{{job['logo']}}" style="max-width:170px;max-height: auto;
-                                            float: right; margin: 3px; padding: 3px;">
+<img src="{{job['logo']}}" style="max-width:170px;max-height: auto;float: right; margin: 3px; padding: 3px;">
     
 <div>
     <h1>{{ job['company'] }}</h1>
         <h2>Job Title: {{ job['title'] }}</h2>
+        <div><a href="/saved?job_id={{job.job_id}}" method='POST' id="save-button"><button>Save this Job</button></a></div><br>
         <p> Location: {{ job['location']}}</p>
         <p> ({{ num_days }} days ago) </p>
         <p> Type: {{ job_type }}</p>
