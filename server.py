@@ -41,7 +41,7 @@ def welcome():
     return render_template("welcome_page.html")
 
 
-@app.route('/register')
+@app.route('/register', methods=['GET'])
 def register_form():
     """Show form for user signup."""
 

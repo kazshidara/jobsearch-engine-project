@@ -1,6 +1,9 @@
 * {
+    
+    -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+
 
 body, html {
     height: 100%;
@@ -13,7 +16,7 @@ body, html {
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(50,50,0,0.5);
+    background-color: rgba(0,0,0,0.4);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -23,6 +26,13 @@ body, html {
     padding: 2em;
     background-color: rgba(170,20,0, 1)
 }
+
+.navbar-default {
+  background-color:gray;
+  background-image: none;
+  background-repeat: no-repeat;
+  opacity: 0.9;
+ }
 
 .navbar-nav {
   display: inline-block;
@@ -34,6 +44,10 @@ body, html {
    display: inline-block;
    margin-left:8px;
    margin-right:25px;
+}
+
+.link {
+    color: white;
 }
 
 /*-------------------------SEARCH PAGE ("/") STYLING------------------------- */
@@ -159,30 +173,31 @@ body, html {
 /*-------------------------WELCOME PAGE ("/welcome") STYLING------------------------- */
 
 
+
+img {
+  display: block;
+  max-width: 100%;
+}
 .welcome-page {
-    background-image: url("/static/images/welcome_page.jpg");
-    min-height: 100%;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
     position: relative;
-    /*filter: blur(7px);
-    -webkit-filter: blur(7px);*/
-    color: grey;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
 }
 
-.register {
-
-    background-color: white;
+.register { 
     padding: 5%;
-    width: 35%;
-    position: relative;
     text-align: center;
     display: block;
-
+    position: absolute;
+    width: 35%;
+    height: auto;
+    background-color: black;
+    opacity: .5;
 }
 
 
