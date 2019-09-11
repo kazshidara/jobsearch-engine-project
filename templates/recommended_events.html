@@ -4,20 +4,31 @@
 
 {% block content %}
 
-  <div>
+  <div class="listings" style="text-align: center;">
 
-      <h2>Based on your Job Search Progress, here are some events we recommend:</h2>
+      <br>
+    <div style="text-align: center; padding-right: 25%; padding-left: 25%; ">
+      <h2 style="font-size: 2.5em;"> Recommended Events </h2>
+      <p style="font-size: 1.5em; color: gray;"> (based on your job search progress)</p><div style=" border-bottom: 1px solid #aaa ; "></div>  
+    </div>
+    <br>
+    <br>
+    <br>
 
-      <ul>
-        
+
+
+      <ul> 
         {% for event_key, event_value in new_dict.items() %}
         
-          <li><h3> {{ new_dict[event_key][0] }} </h3></li>
+          
+        <div class="listing">
+          <h4> {{ new_dict[event_key][0] }} </h4><br><br>
          
-          <img src="{{new_dict[event_key][3]}}">
-          <p><b> About the event:</b> {{new_dict[event_key][1]}}.....</p><br>
+          <img src="{{new_dict[event_key][3]}}" style=" display: block; margin-left: auto; margin-right: auto; width: 18em; height: auto;"><br><br>
+          <p><b> About the event:</b> {{new_dict[event_key][1]}}.....</p>
             <b>More on this event can be found here:</b><a href="{{ new_dict[event_key][2]}}">{{new_dict[event_key][2]}} </a>
-            
+        </div><br><br>
+        <div style=" border-bottom: 1px solid #aaa;"></div>    
             <br> 
             <br>
             <br>
