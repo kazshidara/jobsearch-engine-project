@@ -4,11 +4,39 @@
 
 {% block content %}
 
+<br>
+<br>
 
-<div>
+<div class="company-heading">
+  <h2> {{job.company}} </h2>
+  <br>
+  <div class="company-average">          
+  <span id='company_avg_rating'></span> 
+    <a href="/company_avg?job_id={{job.job_id}}" method='GET' id="company-avg-button" ><button>Get Company Average</button></a>
+   
+        <script type="text/javascript">
+              
+              document.getElementById('company-avg-button').onclick = function(evt) {
+      
+                  evt.preventDefault();
 
-  <h2> {{job.company}} </h2><img src="{{job.logo}}" style="max-width:180px;max-height: auto;float: left; padding: 3px;">
+                  function getCompanyAvg(response) {
+                      $('#company_avg_rating').html(response);
+                  }
+
+                  $.get('/company_avg?job_id={{job.job_id}}', getCompanyAvg);
+              }
+
+        </script>
+  </div>
+  <br>
+  <br>
+    <div style=" border-bottom: 1px solid #aaa;"></div>
 </div>
+
+
+<br>
+<br>
 
 <div class="">
     
@@ -76,35 +104,6 @@
     </script>
 
 </div>
-
-<br>
-<br>
-<br>
-
-<div>
-            
-  <b>Company Average Rating:       </b><span id='company_avg_rating'></span> 
-
-  <a href="/company_avg?job_id={{job.job_id}}" method='GET' id="company-avg-button" ><button>Get Company Average</button></a>
-
-   
-      <script type="text/javascript">
-            
-            document.getElementById('company-avg-button').onclick = function(evt) {
-    
-                evt.preventDefault();
-
-                function getCompanyAvg(response) {
-                    $('#company_avg_rating').html(response);
-                }
-
-                $.get('/company_avg?job_id={{job.job_id}}', getCompanyAvg);
-            }
-
-      </script>
-
-</div>
-
 
 {% endblock %}
 

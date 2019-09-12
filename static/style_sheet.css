@@ -219,10 +219,10 @@ img {
   display: flex;
   justify-content: center;
   text-align: center;
-  border: double;
   width:40%;
   margin-left: 30%;
   padding-top: 30px;
+  border-bottom: 1px solid #aaa;
 
 }
 
@@ -234,4 +234,9 @@ img {
   margin-right: 40px;
 }
 
+.company-heading {
+  text-align: center; 
+  margin-left: 30%; 
+  margin-right: 30%;
+}
 
