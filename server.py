@@ -206,13 +206,13 @@ def record_rating():
     user_id = session.get('user_id')
     
     if not user_id:
-
         flash("You're not logged in. Please login to submit a rating!")
         return redirect("/login")
 
     else:
         # what the user rated the job  
         score_value = request.form['rating_val']
+        print("SCOREEE VALUEEEE", score_value)
         
         #doing a joined load so that only 1 query is sent to server 
         user = User.query.options(db.joinedload('ratings')).get(user_id)
@@ -245,15 +245,17 @@ def return_average_rating():
     job_id = request.args.get('job_id')
     rating = Job.query.options(db.joinedload('ratings')).get(job_id)    
     job = Job.query.get(job_id)      #get the job_id of the specific job posting 
-                 #returns list of rating objects of the job (all ratings of the job)  
+                 #returns list of rating objects of the job (all ratings of the job)
+    
     ratings_list = []
 
     if job.ratings:
         for each_rating in job.ratings: 
             ratings_list.append(each_rating.rating)
         average = round(mean(ratings_list), 1)
+        print("AVERAGEEEE", average)
 
-        if 0 < average < 1:
+        if 0 <= average < 1:
             response = "On average, applicants who applied to this job didn't hear back"
         elif 1 <= average < 2:
             response = "On average, applicants who applied to this job heard back from a recruiter"
@@ -275,20 +277,28 @@ def return_company_average():
     job_id = request.args.get('job_id')
     job = Job.query.get(job_id)
 
+    # add where clause to filter results matching the job id we care about
+    #  add another where clause where the rating is not null
+    #  additionally we can group the results by rating (GROUP BY rating)
+    #. and finally we want the average (SELECT AVG(rating))
+    #. | rating |
+    #. | ------ |
+    #. |  3.5.  |
     company = db.session.query(Rating.rating).join(Job, Job.job_id == Rating.job_id).filter(Job.company == f'{job.company}').all()
     
     ratings_list = []
     
     for each_tuple in company:
         ratings_list.append(each_tuple[0])
-       
+     
+    
     if len(ratings_list) == 0:
         return "No information on this Company yet!"
 
     else:
         avg_company_rating = mean(ratings_list)
 
-        if 0 < avg_company_rating < 1:
+        if 0 <= avg_company_rating < 1:
             response = "On average, applicants who applied to this company didn't hear back"
         elif 1 <= avg_company_rating < 2:
             response = "On average, applicants who applied to this company heard back from a recruiter"
@@ -330,6 +340,10 @@ def return_user_ratings():
             "rating" : job[1].rating
             })
 
+    print("USER RATINGS:", user_ratings)
+
+
+
         #create a new list that has all the job objects that user has rated already
         #user.ratings = all the ratings that specific user has rated 
     jobs_rated = user.ratings
@@ -356,7 +370,7 @@ def return_user_ratings():
                         "hoverBackgroundColor": [
                             "#FF6384" for color in x_axis]
                     }]
-                }
+            }
  
     return jsonify(data_dict)   #data_dict is what gets passed into JS function(data)
 
@@ -378,13 +392,17 @@ def return_company_ratings():
     
     job_id = int(request.args.get('job_id'))
     
+    
     job = Job.query.get(job_id)
+    print("JOB!!!!!", job)
 
     company = db.session.query(Rating).join(Job, Job.job_id == Rating.job_id).filter(Job.company == f'{job.company}').all()
+    print("COMPANYYYY - Rating objects of all companies that have been rated", company)
 
     company_ratings = []
     for each in company:
         company_ratings.append(each.rating)
+    print(company_ratings)
 
     company_dict = {0: 0,
                     1: 0,
@@ -399,6 +417,7 @@ def return_company_ratings():
 
     for key, value in company_dict.items():
         number_of_ratings.append(value)
+
 
     data_dict = {
                 # "data_points" : company_ratings,     
@@ -472,12 +491,14 @@ def show_events():
 
     user = User.query.options(db.joinedload('ratings')).get(user_id)
         
+
         #create a new list that has all the job objects that user has rated already
         #user.ratings = all the ratings that specific user has rated 
     jobs_rated = user.ratings
     rating_list = []
     for rating in jobs_rated:
         rating_list.append(rating.rating)
+    print("USER AVGGGGG")
     print(mean(rating_list))
     
     #networking and career events (Good for user average's that are between 0 and 1)
@@ -494,7 +515,8 @@ def show_events():
     elif mean(rating_list) > 3:
 
         url = f"https://www.eventbriteapi.com/v3/events/search/?q=software+engineering+conference&sort_by=date&location.address={user_location}&location.within=10mi&categories=101%2C102&subcategories=1001%2C2004%2C1009"
-     
+    
+    
     response = requests.get(url, params=payload)
 
     events = response.json()
