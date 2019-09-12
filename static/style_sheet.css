@@ -15,15 +15,15 @@ body, html {
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0,0,0,0.8);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 #modal-contents {
-    padding: 2em;
-    background-color: rgba(170,20,0, 1)
+    padding: 3em;
+    background-color: white;
 }
 
 .navbar-default {
@@ -109,38 +109,42 @@ body, html {
 
 .login-form-title {
     display: relative;
-    text-align: center;
+    text-align: left;
     color: white;
     font-family: 'Montserrat', sans-serif;
-    font-size: 3em;
+    font-size: 2.5em;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 .login-page {
-  /* The background image used search-page  */
-  background-image: url("/static/images/login_page.jpg");
-
-  /* Control the height of the image */
-  min-height: 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: left;
+    align-items: left;
 }
 
 /* Add styles to the search form container */
 .login-form {
-  position: relative;
-  display: inline-block;
-  text-align: center;
-  margin: 10em;
-  min-width: 40%;
-  padding: 5%;
-  background-color: #FF5A5F;
+   
+    text-align: left;
+    display: block;
+    position: absolute;
+    max-width: 100%;
+    padding: 2em;
+    height: auto;
+    background-color: transparent;
+    opacity: 1;
+    margin-top: 10em;
+    margin-left: 20em;
 }
 
 .login-text-email .login-text-password {
@@ -149,23 +153,33 @@ body, html {
   background-position: 50% 50%; 
   background-repeat: no-repeat;
   padding-left: 2%;
-  min-width: 70%;
+  min-width: 80%;
   padding-top: 0.65%;
   padding-bottom: 0.65%;
 }
 /* Set a style for the submit button */
 .login-btn {
-  background-color: gray;
+  background-color: black;
   color: white;
   padding: 5px;
   border: none;
   cursor: pointer;
   width: 30%;
-  opacity: 0.9;
+  opacity: 0.5;
+  float: right;
 }
 
 .login-btn:hover {
   opacity: 1;
+}
+
+.layer {
+  position:absolute;
+  width:100%; 
+  top:0%; 
+  height:100%; 
+  background-color:black; 
+  opacity:0.3;
 }
 
 
@@ -195,8 +209,8 @@ img {
     position: absolute;
     width: 35%;
     height: auto;
-    background-color: black;
-    opacity: .5;
+    background-color: transparent;
+    opacity: 1;
 }
 
 /*-------------------------USER PROFILE ("/user_profile") STYLING------------------------- */

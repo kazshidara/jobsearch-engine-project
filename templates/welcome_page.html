@@ -6,12 +6,14 @@
 
 <div class="welcome-page">
     <img src="/static/images/welcome_background.jpg">
-
+    <div style= "position:absolute; width:100%; top:0%; height:100%; background-color:black; opacity:0.4;"></div>
         <div class="register">
-            <h2>Your career starts here</h2>
+            <h2 style="color: white;">Your career starts here</h2>
             <br>
             <a href="/login"><button>Sign In</button></a><br><br>
-            <a href="/register" id="register-btn"><button>Sign Up</button></a>  
+            <a href="/register" id="register-btn"><button>Sign Up</button></a>
+        </div>
+
             <span id="space"></span>
                 <div id="modal" style="display: none; opacity: 1;">  
                     <div id="modal-contents">    
@@ -27,11 +29,17 @@
                         $.get("/register", showForm);
                     }
                         
+                    // Get the modal
+                    const modal = document.getElementById('modal');
+
+                    // When the user clicks anywhere outside of the modal, close it
+                    window.onclick = function(event) {
+                      if (event.target == modal) {
+                        modal.style.display = "none";
+                      }
+                    }
                 </script>  
-
-        </div>
-           
-
+                  
 </div>
 
 
