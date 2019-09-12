@@ -6,55 +6,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="/static/style_sheet.css">
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
-  
+  <link rel="stylesheet" type="text/css" href="/static/style_sheet.css">
+
 </head>
 <body>
   
-  <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="/" style="color: white;">Job Search Engine</a>
-           {% with messages = get_flashed_messages() %}
-              {% if messages %}
-                <class=flashes>
-              {% for message in messages %}
-                {{ message }}
-              {% endfor %}
-              {% endif %}
-            {% endwith %}
+ <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="logo" href="/welcome">Job Search Engine</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="nav navbar-nav mr-auto navbar-right">
+      <li class="nav-item active">
+        <a class="nav-link" href="/">Search<span class="sr-only"></span></a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Dropdown
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/user_profile">Profile</a>
+          <a class="dropdown-item" href="/show-saved">Saved Jobs</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/logout">Logout</a>
         </div>
-          <ul class="nav navbar-nav navbar-right">
-            {% if session %}
+      </li>
+    
+    </ul>
+    
+  </div>
+</nav>
 
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">USER
-                <span class="caret"></span></a>
-                  <div class="dropdown-menu">
-                    <a class = "dropdown-item" href="/user_profile">Profile</a></
-                    <a class = "dropdown-item" href="/show-saved">Saved Jobs</a>
-                    <a class = "dropdown-item" href="user-events">Recommended Events</a>
-                 </div>    
-              </li>
-              <li><a href="/user_profile"><span class="link">Profile</span></a></li>
-              <li><a href="/"><span class="link">Search for Job </span></a></li>
-              <li><a href="/logout"><span class="link"> Logout</span></a></li>
-            {% else %}
-              <li><a href="/login"><span class="link">Sign In</span></a></li>
-              <li><a href="/welcome"><span class="link">Sign Up</span></a></li>
-            {% endif %}
-          </ul>
-      </div>
-  </nav>
 
- <!--  <div id="modal" style="display: none;">  
-    <div id="modal-contents">      
-    </div>
-  </div> -->
 
 
 
