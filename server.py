@@ -1,3 +1,4 @@
+import os
 from jinja2 import StrictUndefined
 
 from flask import (Flask, render_template, redirect, request, flash, session, url_for, jsonify)
@@ -18,7 +19,7 @@ from functions import days_from_date
 app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
-app.secret_key = "YeahYouWishYouKnew"
+app.secret_key = os.environ.get("SECRET_KEY")
 
 app.jinja_env.undefined = StrictUndefined
 
@@ -212,7 +213,6 @@ def record_rating():
     else:
         # what the user rated the job  
         score_value = request.form['rating_val']
-        print("SCOREEE VALUEEEE", score_value)
         
         #doing a joined load so that only 1 query is sent to server 
         user = User.query.options(db.joinedload('ratings')).get(user_id)
@@ -330,9 +330,6 @@ def return_user_ratings():
             "rating" : job[1].rating
             })
 
-    print("USER RATINGS:", user_ratings)
-
-
 
         #create a new list that has all the job objects that user has rated already
         #user.ratings = all the ratings that specific user has rated 
@@ -444,7 +441,6 @@ def return_saved_jobs():
 
         else:
             save_job = Savings(user_id=user_id, job_id=job_id)
-            print(save_job)
 
             db.session.add(save_job)
             db.session.commit()
@@ -472,7 +468,9 @@ def show_events():
 
     user_location = "San Francisco"
 
-    payload = {'token' : 'W5TEINASBAG56UPMVLKI'}
+    token= os.environ.get('EVENTBRITE_KEY')
+
+    payload = {'token' : f'{token}'}
     
     user_id = session.get('user_id')
 
