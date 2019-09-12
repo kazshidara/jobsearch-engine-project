@@ -45,30 +45,3 @@
 
 {% endblock %}
 
-
-
-<div class="welcome-page">
-
-    <div class="register">
-        <h2>Your career starts here</h2>
-        <br>
-        <a href="/login"><button>Sign In</button></a><br><br>
-        <a href="/register" id="register-btn"><button>Sign Up</button></a>  
-        <span id="space"></span>
-
-            <script type="text/javascript">
-
-                document.getElementById('register-btn').onclick= function(evt) {
-                    evt.preventDefault();
-                    function showForm(response) {
-                        $('#modal-contents').html(response);
-                        $('#modal').show();
-                    }   
-
-                    $.get("/register", showForm);
-                }
-                    
-            </script>  
-
-    </div>
-</div> -->

@@ -33,60 +33,56 @@
   <br>
     <div style=" border-bottom: 1px solid #aaa;"></div>
 </div>
-
-
 <br>
 <br>
-
-<div class="">
+<div class="">    
+  <canvas id="barChart"></canvas>
+  <div id="legend2"></div>
     
-    <canvas id="barChart"></canvas>
-    <div id="legend2"></div>
-    
-<script>
+  <script>
 
-      const optionsBar = {
+        const optionsBar = {
 
-            title:{
-              display: true,
-              text: "Visualizing Company Inclusivity Efforts",
-              fontSize: 25,
-              padding: 20,
+              title:{
+                display: true,
+                text: "Visualizing Company Inclusivity Efforts",
+                fontSize: 25,
+                padding: 20,
 
-            },
-            tooltips: {
-              enabled:true,
-              mode: 'nearest',
-              intersect: true,
-              xPadding:20,
-              yPadding:20,
-              position: 'average',
-              callbacks: {
-                
-                }
               },
-            legend: {
-              display: false
-            },
-            layout: {
-                  padding: {
-                      left: 70,
-                      right: 70,
-                      top: 50,
-                      bottom: 50
+              tooltips: {
+                enabled:true,
+                mode: 'nearest',
+                intersect: true,
+                xPadding:20,
+                yPadding:20,
+                position: 'average',
+                callbacks: {
+                  
                   }
+                },
+              legend: {
+                display: false
               },
-            scales: {
-              xAxes: [{
-                barPercentage: 1,
-                barThickness: 50,
-                minBarLength: 2,
-                gridLines: {
-                    offsetGridLines: true
+              layout: {
+                    padding: {
+                        left: 70,
+                        right: 70,
+                        top: 50,
+                        bottom: 50
                     }
-                }]
-              },
-      };
+                },
+              scales: {
+                xAxes: [{
+                  barPercentage: 1,
+                  barThickness: 50,
+                  minBarLength: 2,
+                  gridLines: {
+                      offsetGridLines: true
+                      }
+                  }]
+                },
+        };
 
 
         // Make Bar Chart of ratings that users gave for a cetain company
@@ -102,7 +98,6 @@
         });
 
     </script>
-
 </div>
 
 {% endblock %}

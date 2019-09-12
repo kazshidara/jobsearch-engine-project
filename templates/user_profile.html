@@ -4,8 +4,8 @@
 
 {% block content %}
 
-
-<br><br>
+<br>
+<br>
 <div class="user-info-box">
   <div>
       <h1 style="">{{user.fname}} {{user.lname}}</h1>
@@ -13,6 +13,7 @@
   </div>
   <br>
 </div>
+
 <br>
 <br>
 
@@ -114,16 +115,4 @@ const optionsLine = {
 </script>
 
 {% endblock %}
-
-<!-- Dat implemented test below to check JS code -->
-<!-- function printObject(object, current_output) {
-//   for (var child in object) {
-//     if (child instanceof Object) {
-//       return current_output + printObject(child);
-//     } else {
-//       return current_output + " " + child;
-//     }
-//   }
-// }; -->
-
 

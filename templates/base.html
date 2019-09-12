@@ -9,7 +9,6 @@
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
   <link rel="stylesheet" type="text/css" href="/static/style_sheet.css">
 
@@ -37,26 +36,23 @@
         <a class="nav-link" href="/">Search<span class="sr-only"></span></a>
       </li>
       {% if session %}
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">For you 
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/user_profile">Profile</a>
-          <a class="dropdown-item" href="/show-saved">Saved Jobs</a>
-          <a class="dropdown-item" href="/user-events">Recommended</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="/logout">Logout</a>
-        </div>
-      </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">For you</a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/user_profile">Profile</a>
+            <a class="dropdown-item" href="/show-saved">Saved Jobs</a>
+            <a class="dropdown-item" href="/user-events">Recommended</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/logout">Logout</a>
+          </div>
+        </li>
       {% else %}
         <li class="nav-item active">
           <a class="nav-link" href="/login">Sign In<span class="sr-only"></span></a></li>
         <li class="nav-item active">
           <a class="nav-link" href="/welcome">Sign Up<span class="sr-only"></span></a></li>
       {% endif %}
-
-    </ul>
-    
+    </ul>    
   </div>
 </nav>
 

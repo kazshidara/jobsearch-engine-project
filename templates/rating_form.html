@@ -5,7 +5,6 @@
 </head>
 <body>
     <h3>Rating form for {{ job['title'] }} at {{ job['company'] }}</h3>
-
         <div>
             <form method="POST" action='/rating'>
                 <input type="hidden" name="job_id" value="{{ job.job_id }}">
@@ -14,10 +13,8 @@
                     <input type="radio" name="option" value="0"> Applied to this job<br>
                     <input type="radio" name="option" value="1"> Recruiter reached out to me<br>
                     <input type="radio" name="option" value="2"> Phone Screen<br>  
-                    <input type="radio" name="option" value="3"> Onsite Interview<br>  
-                    <input type="radio" name="option" value="4"> They extended an offer!<br><br>
+                    <input type="radio" name="option" value="3"> Onsite Interview<br> <input type="radio" name="option" value="4"> They extended an offer!<br><br>
                     </div>
-
                     <input type="submit" value="Submit" id="submit-rating-button">
                     <b><span id='space1'></span></b> 
                     <div class="flash-message">
@@ -46,10 +43,7 @@
                     const ratingVal = $('input[name=option]:checked').val();
                 
                     $.post("/rating?job_id={{job.job_id}}", {rating_val : ratingVal} , checkUserRatings);
-
-
                 }
-
 
                 // Get the modal
                 const modal = document.getElementById('modal');
@@ -59,10 +53,8 @@
                   if (event.target == modal) {
                     modal.style.display = "none";
                   }
-                }
-                   
-            </script>
-            
+                }                   
+            </script>            
         </div>
         
 </body>

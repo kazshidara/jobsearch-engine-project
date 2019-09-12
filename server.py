@@ -253,7 +253,6 @@ def return_average_rating():
         for each_rating in job.ratings: 
             ratings_list.append(each_rating.rating)
         average = round(mean(ratings_list), 1)
-        print("AVERAGEEEE", average)
 
         if 0 <= average < 1:
             response = "On average, applicants who applied to this job didn't hear back"
@@ -277,13 +276,6 @@ def return_company_average():
     job_id = request.args.get('job_id')
     job = Job.query.get(job_id)
 
-    # add where clause to filter results matching the job id we care about
-    #  add another where clause where the rating is not null
-    #  additionally we can group the results by rating (GROUP BY rating)
-    #. and finally we want the average (SELECT AVG(rating))
-    #. | rating |
-    #. | ------ |
-    #. |  3.5.  |
     company = db.session.query(Rating.rating).join(Job, Job.job_id == Rating.job_id).filter(Job.company == f'{job.company}').all()
     
     ratings_list = []
@@ -321,7 +313,6 @@ def return_user_ratings():
     user = User.query.options(db.joinedload('ratings')).get(user_id)
     
     job_object = db.session.query(Job, Rating).join(Rating, Job.job_id == Rating.job_id).filter(Rating.user_id==f'{user_id}').all()
-    print("ALL JOB OBJECTS FOR USERRRRRR", job_object)
     
     # Each point in the graph will represent:
     #  company name
@@ -331,7 +322,6 @@ def return_user_ratings():
     user_ratings = []
 
     for job in job_object:    
-        print("Job in job list: ", job)
 
         user_ratings.append({
             "title" : job[0].title,
@@ -394,15 +384,12 @@ def return_company_ratings():
     
     
     job = Job.query.get(job_id)
-    print("JOB!!!!!", job)
 
     company = db.session.query(Rating).join(Job, Job.job_id == Rating.job_id).filter(Job.company == f'{job.company}').all()
-    print("COMPANYYYY - Rating objects of all companies that have been rated", company)
 
     company_ratings = []
     for each in company:
         company_ratings.append(each.rating)
-    print(company_ratings)
 
     company_dict = {0: 0,
                     1: 0,
@@ -498,8 +485,6 @@ def show_events():
     rating_list = []
     for rating in jobs_rated:
         rating_list.append(rating.rating)
-    print("USER AVGGGGG")
-    print(mean(rating_list))
     
     #networking and career events (Good for user average's that are between 0 and 1)
     if mean(rating_list) <= 1:
