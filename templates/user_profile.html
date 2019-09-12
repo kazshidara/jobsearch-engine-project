@@ -4,16 +4,17 @@
 
 {% block content %}
 
-<div>
-    <h1>{{user.fname}} {{user.lname}}</h1>
-    <h3> {{ user.email }}</h3>
+
+<br><br>
+<div class="user-info-box">
+  <div>
+      <h1 style="">{{user.fname}} {{user.lname}}</h1>
+      <p> {{ user.email }}</p>
+  </div>
+  <br>
 </div>
-
-
-<div>
-  <a href="/show-saved" method="GET" id="show-saved-button"><button>Show my saved jobs</button></a>
-</div>
-
+<br>
+<br>
 
 <div class="user-progress-chart">
     <canvas id="lineChart"></canvas>

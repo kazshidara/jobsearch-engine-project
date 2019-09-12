@@ -5,16 +5,27 @@
 {% block content %}
 
 
+        <br>
+        <br>
+        <h2 style="text-align: center; font-size: 3em;"> Saved Jobs </h2>
+        <br>
+        <br>
+
    {% for job in saved_jobs %}
 
-        <h2>{{ job['company'] }}</h6>
-        <h3>Job Title: {{ job['title'] }}</h6>
-        <p> Location: {{ job['location'] }}</p>
-        <p> {{ (current_date - job.released_at).days }} days ago </p>
-        <a href="/job_profile?job_id={{job.job_id}}"><button>View Job</button></a>
 
-        <br>
-        <br>
+        <div class="listings">
+            <h3 style="">{{ job['title'] }}</h3>
+            <p style="font-size:1.7em;">{{ job['company'] }}</p>   
+            <p style="color: gray;"> {{ job['location'] }}</p>
+            <p> {{ (current_date - job.released_at).days }} days ago </p>
+            <a href="/job_profile?job_id={{job.job_id}}" style="align-content: right;"><button>View Job</button></a>
+            <br>
+            <br>
+            <div style=" border-bottom: 1px solid #aaa;"></div>
+            <br>
+            <br>
+        </div>
 
     {% endfor %}
 

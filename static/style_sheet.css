@@ -170,7 +170,7 @@ img {
 }
 
 .login-btn:hover {
-  opacity: 1;
+  opacity: .7;
 }
 
 .layer {
@@ -179,7 +179,7 @@ img {
   top:0%; 
   height:100%; 
   background-color:black; 
-  opacity:0.3;
+  opacity:0.20;
 }
 
 
