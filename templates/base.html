@@ -16,36 +16,49 @@
 </head>
 <body>
   
- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+ <nav class="navbar sticky-top navbar-expand navbar-light bg-light">
   <a class="logo" href="/welcome">Job Search Engine</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> 
     <span class="navbar-toggler-icon"></span>
   </button>
-
+  <div class="flash message" style="padding-left: 20px;">
+      {% with messages = get_flashed_messages() %}    
+          {% if messages %} 
+              <class=flashes>    
+            {% for message in messages %}     
+                  {{ message }}      
+            {% endfor %}          
+          {% endif %}       
+      {% endwith %}
+  </div>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="nav navbar-nav mr-auto navbar-right">
+    <ul class="navbar-nav ml-auto navbar" >
       <li class="nav-item active">
         <a class="nav-link" href="/">Search<span class="sr-only"></span></a>
       </li>
+      {% if session %}
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">For you 
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="/user_profile">Profile</a>
           <a class="dropdown-item" href="/show-saved">Saved Jobs</a>
+          <a class="dropdown-item" href="/user-events">Recommended Events</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="/logout">Logout</a>
         </div>
       </li>
-    
+      {% else %}
+        <li class="nav-item active">
+          <a class="nav-link" href="/login">Sign In<span class="sr-only"></span></a></li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/welcome">Sign Up<span class="sr-only"></span></a></li>
+      {% endif %}
+
     </ul>
     
   </div>
 </nav>
-
-
-
 
 
   {% block content %} Put Content HERE! {% endblock %}
