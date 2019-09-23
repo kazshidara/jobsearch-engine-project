@@ -13,15 +13,37 @@ APIs: Github Jobs, Eventbrite
 
 ## Features
 
-1. Search for active job posting via job titles or preferred location
+1. Create an account or Login 
 
-2. Save jobs in personal profile for later reference
+![alttext](https://raw.githubusercontent.com/kazshidara/jobsearch-engine-project/master/static/images/registration.png)
 
-3. Registered and Logged in users can track their current job search progress 
 
-4. Aggregates feedback/responses from all users of the app to display what application process is like for each hiring company
+2. Search for active job posting via job titles or preferred location
 
-5. Based on individual user’s progress, metaSearch recommends tech/engineering events that are catered to each person’s needs
+![alttext](https://raw.githubusercontent.com/kazshidara/jobsearch-engine-project/master/static/images/search.png)
+
+
+3. Save jobs in personal profile for later reference
+
+![alttext](https://raw.githubusercontent.com/kazshidara/jobsearch-engine-project/master/static/images/save.png)
+
+
+4. Registered and Logged in users can track their current job search progress 
+
+![alttext](https://raw.githubusercontent.com/kazshidara/jobsearch-engine-project/master/static/images/progress.png)
+
+
+5. Aggregates feedback/responses from all users of the app to display what application process is like for each hiring company
+
+![alttext](https://raw.githubusercontent.com/kazshidara/jobsearch-engine-project/master/static/images/rating.png)
+
+![alttext](https://raw.githubusercontent.com/kazshidara/jobsearch-engine-project/master/static/images/job.png)
+
+
+6. Based on individual user’s progress, metaSearch recommends tech/engineering events that are catered to each person’s needs
+
+![alttext](https://raw.githubusercontent.com/kazshidara/jobsearch-engine-project/master/static/images/recEvents.png)
+
 
 
 
